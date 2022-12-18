@@ -7,14 +7,13 @@ This example illustrates how to use the `cloud-spanner` module.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bucket\_name | The name of the bucket to create. | `string` | n/a | yes |
 | project\_id | The ID of the project in which to provision resources. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| bucket\_name | The name of the bucket. |
+| spanner\_instance\_id | The spanner\_instance\_id. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

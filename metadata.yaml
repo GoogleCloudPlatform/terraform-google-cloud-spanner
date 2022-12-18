@@ -1,0 +1,108 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-spanner
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  title: terraform-google-cloud-spanner
+  source:
+    repo: https://github.com/anaik91/terraform-google-cloud-spanner.git
+    sourceType: git
+  version: 0.0.1
+  actuationTool:
+    type: Terraform
+    version: '>= 0.13'
+  subBlueprints:
+  - name: schedule_spanner_backup
+    location: modules/schedule_spanner_backup
+  examples:
+  - name: simple_example
+    location: examples/simple_example
+  variables:
+  - name: backup_schedule
+    description: The schedule to be enabled on scheduler to trigger spanner DB backup
+    type: string
+    default: 0 */6 * * *
+    required: false
+  - name: database_config
+    description: 'The list of databases with their configuration to be created '
+    type: |-
+      map(object({
+          version_retention_period = string
+          ddl                      = list(string)
+          kms_key_name             = optional(string)
+          deletion_protection      = bool
+          database_iam             = list(string)
+          enable_backup            = optional(bool)
+          backup_retention         = optional(number)
+        }))
+    default:
+      db1:
+        backup_retention: 86400
+        database_iam: []
+        ddl: []
+        deletion_protection: false
+        enable_backup: true
+        version_retention_period: 3d
+    required: false
+  - name: instance_config
+    description: The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance.
+    type: string
+    required: true
+  - name: instance_display_name
+    description: The descriptive name for this instance as it appears in UIs.
+    type: string
+    default: regional-europe-west1
+    required: false
+  - name: instance_iam
+    description: The list of permissions on spanner instance
+    type: list(string)
+    required: true
+  - name: instance_labels
+    description: A set of key/value label pairs to assign to the spanner instance
+    type: map(string)
+    default: {}
+    required: false
+  - name: instance_name
+    description: A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length.
+    type: string
+    default: regional-europe-west1
+    required: false
+  - name: instance_size
+    description: The sizing configuration of Spanner Instance based on num of nodes OR instance processing units.
+    type: |-
+      object({
+          num_nodes        = optional(number)
+          processing_units = optional(number)
+        })
+    required: true
+  - name: project_id
+    description: The project ID to deploy to
+    type: string
+    required: true
+  outputs:
+  - name: spanner_instance_id
+    description: Instance ID  of spanner Instance
+  roles:
+  - level: Project
+    roles:
+    - roles/owner
+  services:
+  - cloudresourcemanager.googleapis.com
+  - storage-api.googleapis.com
+  - serviceusage.googleapis.com

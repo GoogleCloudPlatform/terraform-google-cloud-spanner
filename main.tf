@@ -23,6 +23,29 @@ locals {
       "${k}|${element(split("=>", x), 0)}|${element(split("=>", x), 1)}"
     ]
   ])
+
+  kms_crypto_keys = [
+    for k, v in var.database_config :
+    v.kms_key_name if try(v.kms_key_name, null) != null
+  ]
+
+  kms_key_rings = toset([
+    for k in local.kms_crypto_keys :
+    join(
+      "/",
+      slice(split("/", k), 0, length(split("/", k)) - 2)
+    )
+  ])
+
+  backup_args = [
+    for k, v in var.database_config :
+    {
+      "backupId" : k,
+      "database" : "projects/${var.project_id}/instances/${var.instance_name}/databases/${k}",
+      "expireTime" : v.backup_retention,
+      "parent" : "projects/${var.project_id}/instances/${var.instance_name}"
+    } if try(v.enable_backup, false)
+  ]
 }
 
 resource "google_spanner_instance" "instance_num_node" {
@@ -57,6 +80,17 @@ resource "google_spanner_instance_iam_member" "instance" {
   member  = element(split("=>", each.key), 0)
 }
 
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
+resource "google_kms_key_ring_iam_member" "key_ring" {
+  for_each    = local.kms_key_rings
+  key_ring_id = each.key
+  role        = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member      = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-spanner.iam.gserviceaccount.com"
+}
+
 resource "google_spanner_database" "database" {
   for_each = var.database_config
   instance = (
@@ -69,6 +103,21 @@ resource "google_spanner_database" "database" {
   version_retention_period = each.value.version_retention_period
   ddl                      = each.value.ddl
   deletion_protection      = each.value.deletion_protection
+
+  dynamic "encryption_config" {
+    for_each = (
+      try(each.value.kms_key_name, null) != null ?
+      tolist([each.value.kms_key_name]) :
+      []
+    )
+    content {
+      kms_key_name = encryption_config.value
+    }
+  }
+
+  depends_on = [
+    google_kms_key_ring_iam_member.key_ring
+  ]
 }
 
 resource "google_spanner_database_iam_member" "database" {
@@ -86,4 +135,11 @@ resource "google_spanner_database_iam_member" "database" {
   depends_on = [
     google_spanner_database.database
   ]
+}
+
+module "schedule_spanner_backup" {
+  source            = "./modules/schedule_spanner_backup"
+  project_id        = var.project_id
+  backup_schedule   = var.backup_schedule
+  workflow_argument = jsonencode(local.backup_args)
 }

@@ -14,9 +14,35 @@
  * limitations under the License.
  */
 
-module "cloud_spanner" {
-  source = "../.."
 
-  project_id  = var.project_id
-  bucket_name = var.bucket_name
+module "cloud_spanner" {
+  source                = "../.."
+  project_id            = var.project_id
+  instance_name         = "spanner-name"
+  instance_display_name = "spanner-dispname"
+  instance_config       = "regional-europe-west1"
+  instance_size = {
+    # num_nodes = 2
+    processing_units = 200
+  }
+  instance_iam = [
+    "user:ashwinknaik@google.com=>roles/spanner.databaseAdmin",
+    "user:ashwinknaik@google.com=>roles/spanner.databaseUser"
+  ]
+  instance_labels = {}
+  database_config = {
+    db1 = {
+      version_retention_period = "3d"
+      ddl = [
+        "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)",
+        "CREATE TABLE t2 (t2 INT64 NOT NULL,) PRIMARY KEY(t2)"
+      ]
+      kms_key_name        = "projects/ashwinknaik-314910/locations/europe-west1/keyRings/apigee-euw1-instance-kr/cryptoKeys/inst-disk"
+      deletion_protection = false
+      database_iam        = []
+      enable_backup       = true
+      backup_retention    = 86400
+    }
+  }
+  backup_schedule = "0 */6 * * *"
 }

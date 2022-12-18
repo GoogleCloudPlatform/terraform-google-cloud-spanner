@@ -52,11 +52,11 @@ variable "instance_size" {
   }
 }
 
-variable "create_instance" {
-  description = "Switch to use create OR use existing Spanner Instance "
-  type        = bool
-  default     = true
-}
+# variable "create_instance" {
+#   description = "Switch to use create OR use existing Spanner Instance "
+#   type        = bool
+#   default     = true
+# }
 
 variable "instance_iam" {
   description = "The list of permissions on spanner instance"
@@ -69,20 +69,22 @@ variable "instance_labels" {
   default     = {}
 }
 
-variable "enable_default_db" {
-  description = "Enable creation of default DB"
-  type        = bool
-  default     = false
-}
+# variable "enable_default_db" {
+#   description = "Enable creation of default DB"
+#   type        = bool
+#   default     = false
+# }
 
 variable "database_config" {
   description = "The list of databases with their configuration to be created "
   type = map(object({
     version_retention_period = string
     ddl                      = list(string)
+    kms_key_name             = optional(string)
     deletion_protection      = bool
     database_iam             = list(string)
-    enable_backup            = bool
+    enable_backup            = optional(bool)
+    backup_retention         = optional(number)
   }))
   default = {
     "db1" = {
@@ -91,10 +93,10 @@ variable "database_config" {
       deletion_protection      = false
       database_iam             = []
       enable_backup            = true
+      backup_retention         = 86400
     }
   }
 }
-
 
 variable "backup_schedule" {
   description = "The schedule to be enabled on scheduler to trigger spanner DB backup"

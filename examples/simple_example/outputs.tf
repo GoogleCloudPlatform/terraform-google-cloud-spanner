@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-output "bucket_name" {
-  description = "The name of the bucket."
-  value       = module.cloud_spanner.bucket_name
+output "spanner_instance_id" {
+  description = "The spanner_instance_id."
+  value       = module.cloud_spanner.spanner_instance_id
 }

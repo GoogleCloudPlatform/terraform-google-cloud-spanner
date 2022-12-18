@@ -28,21 +28,14 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| backup\_schedule | The schedule to be enabled on scheduler to trigger spanner DB backup | `string` | `"0 */6 * * *"` | no |
-| database\_config | The list of databases with their configuration to be created | <pre>map(object({<br>    version_retention_period = string<br>    ddl                      = list(string)<br>    kms_key_name             = optional(string)<br>    deletion_protection      = bool<br>    database_iam             = list(string)<br>    enable_backup            = optional(bool)<br>    backup_retention         = optional(number)<br>  }))</pre> | <pre>{<br>  "db1": {<br>    "backup_retention": 86400,<br>    "database_iam": [],<br>    "ddl": [],<br>    "deletion_protection": false,<br>    "enable_backup": true,<br>    "version_retention_period": "3d"<br>  }<br>}</pre> | no |
-| instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | n/a | yes |
-| instance\_display\_name | The descriptive name for this instance as it appears in UIs. | `string` | `"regional-europe-west1"` | no |
-| instance\_iam | The list of permissions on spanner instance | `list(string)` | n/a | yes |
-| instance\_labels | A set of key/value label pairs to assign to the spanner instance | `map(string)` | `{}` | no |
-| instance\_name | A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length. | `string` | `"regional-europe-west1"` | no |
-| instance\_size | The sizing configuration of Spanner Instance based on num of nodes OR instance processing units. | <pre>object({<br>    num_nodes        = optional(number)<br>    processing_units = optional(number)<br>  })</pre> | n/a | yes |
+| backup\_schedule | The Backup Schedule in CRON format | `string` | n/a | yes |
+| backup\_schedule\_region | The schedule to be enabled on scheduler to trigger spanner DB backup | `string` | `"us-central1"` | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
+| workflow\_argument | The arguments to workflow as JSON encoded | `string` | n/a | yes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| spanner\_instance\_id | Instance ID  of spanner Instance |
+No output.
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

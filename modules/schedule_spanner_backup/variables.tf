@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.13"
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 3.53, < 5.0"
-    }
-  }
+variable "project_id" {
+  description = "The project ID to deploy to"
+  type        = string
+}
 
-  provider_meta "google" {
-    module_name = "blueprints/terraform/cloud-spanner/v0.0.1"
-  }
+variable "backup_schedule" {
+  description = "The Backup Schedule in CRON format"
+  type        = string
+}
+
+variable "backup_schedule_region" {
+  description = "The schedule to be enabled on scheduler to trigger spanner DB backup"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "workflow_argument" {
+  description = "The arguments to workflow as JSON encoded"
+  type        = string
 }
