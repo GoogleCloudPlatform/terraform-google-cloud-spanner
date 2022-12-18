@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-output "bucket_name" {
-  description = "Name of the bucket"
-  value       = google_storage_bucket.main.name
+output "spanner_instance_id" {
+  description = "Instance ID  of spanner Instance"
+  value = (
+    local.enable_instance_nn ?
+    google_spanner_instance.instance_num_node[0].id :
+    google_spanner_instance.instance_processing_units[0].id
+  )
 }

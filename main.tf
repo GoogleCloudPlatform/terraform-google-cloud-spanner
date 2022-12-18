@@ -14,8 +14,76 @@
  * limitations under the License.
  */
 
-resource "google_storage_bucket" "main" {
+locals {
+  enable_instance_nn = var.instance_size.num_nodes != null ? true : false
+  database_iam = flatten([
+    for k, v in var.database_config :
+    [
+      for x in v.database_iam :
+      "${k}|${element(split("=>", x), 0)}|${element(split("=>", x), 1)}"
+    ]
+  ])
+}
+
+resource "google_spanner_instance" "instance_num_node" {
+  count        = local.enable_instance_nn ? 1 : 0
+  project      = var.project_id
+  config       = var.instance_config
+  display_name = var.instance_display_name
+  name         = var.instance_name
+  num_nodes    = var.instance_size.num_nodes
+  labels       = var.instance_labels
+}
+
+resource "google_spanner_instance" "instance_processing_units" {
+  count            = local.enable_instance_nn ? 0 : 1
+  project          = var.project_id
+  config           = var.instance_config
+  display_name     = var.instance_display_name
+  name             = var.instance_name
+  processing_units = var.instance_size.processing_units
+  labels           = var.instance_labels
+}
+
+resource "google_spanner_instance_iam_member" "instance" {
+  for_each = toset(var.instance_iam)
+  instance = (
+    local.enable_instance_nn ?
+    google_spanner_instance.instance_num_node[0].name :
+    google_spanner_instance.instance_processing_units[0].name
+  )
+  project = var.project_id
+  role    = element(split("=>", each.key), 1)
+  member  = element(split("=>", each.key), 0)
+}
+
+resource "google_spanner_database" "database" {
+  for_each = var.database_config
+  instance = (
+    local.enable_instance_nn ?
+    google_spanner_instance.instance_num_node[0].name :
+    google_spanner_instance.instance_processing_units[0].name
+  )
+  project                  = var.project_id
+  name                     = each.key
+  version_retention_period = each.value.version_retention_period
+  ddl                      = each.value.ddl
+  deletion_protection      = each.value.deletion_protection
+}
+
+resource "google_spanner_database_iam_member" "database" {
+  for_each = toset(local.database_iam)
+  instance = (
+    local.enable_instance_nn ?
+    google_spanner_instance.instance_num_node[0].name :
+    google_spanner_instance.instance_processing_units[0].name
+  )
   project  = var.project_id
-  name     = var.bucket_name
-  location = "US"
+  database = element(split("|", each.key), 0)
+  role     = element(split("|", each.key), 2)
+  member   = element(split("|", each.key), 1)
+
+  depends_on = [
+    google_spanner_database.database
+  ]
 }
