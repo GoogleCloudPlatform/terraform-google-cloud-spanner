@@ -31,6 +31,8 @@ spec:
   - name: schedule_spanner_backup
     location: modules/schedule_spanner_backup
   examples:
+  - name: example_with_backup
+    location: examples/example_with_backup
   - name: simple_example
     location: examples/simple_example
   variables:
@@ -38,6 +40,11 @@ spec:
     description: The schedule to be enabled on scheduler to trigger spanner DB backup
     type: string
     default: 0 */6 * * *
+    required: false
+  - name: backup_schedule_region
+    description: The schedule to be enabled on scheduler to trigger spanner DB backup
+    type: string
+    default: us-central1
     required: false
   - name: create_instance
     description: 'Switch to use create OR use existing Spanner Instance '
@@ -103,10 +110,14 @@ spec:
     type: string
     required: true
   outputs:
+  - name: cloud_scheduler_id
+    description: Spanner Backup Cloud Scheduler ID
   - name: spanner_db_details
     description: Spanner Databases information map
   - name: spanner_instance_id
     description: Spanner Instance ID
+  - name: workflow_id
+    description: Spanner Backup Workflow ID
   roles:
   - level: Project
     roles:
@@ -122,3 +133,4 @@ spec:
   - pubsub.googleapis.com
   - logging.googleapis.com
   - storage.googleapis.com
+  - appengine.googleapis.com

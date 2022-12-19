@@ -18,8 +18,8 @@
 module "cloud_spanner" {
   source                = "../.."
   project_id            = var.project_id
-  instance_name         = "spanner-name"
-  instance_display_name = "spanner-dispname"
+  instance_name         = "backup-spanner-name"
+  instance_display_name = "backup-spanner-dispname"
   instance_config       = "regional-europe-west1"
   instance_size = {
     # num_nodes = 2
@@ -30,7 +30,7 @@ module "cloud_spanner" {
   ]
   instance_labels = {}
   database_config = {
-    db1 = {
+    backupdb1 = {
       version_retention_period = "3d"
       ddl = [
         "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)",
@@ -38,9 +38,10 @@ module "cloud_spanner" {
       ]
       deletion_protection = false
       database_iam        = []
-      enable_backup       = false
+      enable_backup       = true
       backup_retention    = 86400
       create_db           = true
     }
   }
+  backup_schedule = "0 */6 * * *"
 }

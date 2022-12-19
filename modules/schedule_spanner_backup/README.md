@@ -35,7 +35,10 @@ Functional examples are included in the
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| scheduler\_job\_id | Google Cloud scheduler job id |
+| workflow\_id | The id  of the workflow. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

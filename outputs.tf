@@ -34,3 +34,13 @@ output "spanner_db_details" {
     k => google_spanner_database.database[k]
   }
 }
+
+output "workflow_id" {
+  description = "Spanner Backup Workflow ID"
+  value       = length(local.backup_args) > 0 ? module.schedule_spanner_backup[0].workflow_id : null
+}
+
+output "cloud_scheduler_id" {
+  description = "Spanner Backup Cloud Scheduler ID"
+  value       = length(local.backup_args) > 0 ? module.schedule_spanner_backup[0].scheduler_job_id : null
+}

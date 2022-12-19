@@ -35,5 +35,6 @@ module "project" {
     "pubsub.googleapis.com",
     "logging.googleapis.com",
     "storage.googleapis.com",
+    "appengine.googleapis.com",
   ]
 }

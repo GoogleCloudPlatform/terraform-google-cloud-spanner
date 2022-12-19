@@ -29,6 +29,7 @@ Functional examples are included in the
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | backup\_schedule | The schedule to be enabled on scheduler to trigger spanner DB backup | `string` | `"0 */6 * * *"` | no |
+| backup\_schedule\_region | The schedule to be enabled on scheduler to trigger spanner DB backup | `string` | `"us-central1"` | no |
 | create\_instance | Switch to use create OR use existing Spanner Instance | `bool` | `true` | no |
 | database\_config | The list of databases with their configuration to be created | <pre>map(object({<br>    version_retention_period = string<br>    ddl                      = list(string)<br>    kms_key_name             = optional(string)<br>    deletion_protection      = bool<br>    database_iam             = list(string)<br>    enable_backup            = optional(bool)<br>    backup_retention         = optional(number)<br>    create_db                = optional(bool)<br>  }))</pre> | <pre>{<br>  "db1": {<br>    "backup_retention": 86400,<br>    "create_db": true,<br>    "database_iam": [],<br>    "ddl": [],<br>    "deletion_protection": false,<br>    "enable_backup": true,<br>    "version_retention_period": "3d"<br>  }<br>}</pre> | no |
 | instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | n/a | yes |
@@ -43,8 +44,10 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
+| cloud\_scheduler\_id | Spanner Backup Cloud Scheduler ID |
 | spanner\_db\_details | Spanner Databases information map |
 | spanner\_instance\_id | Spanner Instance ID |
+| workflow\_id | Spanner Backup Workflow ID |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

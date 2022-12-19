@@ -27,6 +27,8 @@ spec:
     type: Terraform
     version: '>= 0.13'
   examples:
+  - name: example_with_backup
+    location: examples/example_with_backup
   - name: simple_example
     location: examples/simple_example
   variables:
@@ -47,6 +49,11 @@ spec:
     description: The arguments to workflow as JSON encoded
     type: string
     required: true
+  outputs:
+  - name: scheduler_job_id
+    description: Google Cloud scheduler job id
+  - name: workflow_id
+    description: The id  of the workflow.
   roles:
   - level: Project
     roles:
@@ -62,3 +69,4 @@ spec:
   - pubsub.googleapis.com
   - logging.googleapis.com
   - storage.googleapis.com
+  - appengine.googleapis.com

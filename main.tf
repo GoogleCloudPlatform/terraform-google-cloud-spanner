@@ -162,9 +162,10 @@ resource "google_spanner_database_iam_member" "database" {
 }
 
 module "schedule_spanner_backup" {
-  count             = length(local.backup_args) > 0 ? 1 : 0
-  source            = "./modules/schedule_spanner_backup"
-  project_id        = var.project_id
-  backup_schedule   = var.backup_schedule
-  workflow_argument = jsonencode(local.backup_args)
+  count                  = length(local.backup_args) > 0 ? 1 : 0
+  source                 = "./modules/schedule_spanner_backup"
+  project_id             = var.project_id
+  backup_schedule        = var.backup_schedule
+  workflow_argument      = jsonencode(local.backup_args)
+  backup_schedule_region = var.backup_schedule_region
 }

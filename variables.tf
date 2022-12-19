@@ -105,3 +105,9 @@ variable "backup_schedule" {
   type        = string
   default     = "0 */6 * * *"
 }
+
+variable "backup_schedule_region" {
+  description = "The schedule to be enabled on scheduler to trigger spanner DB backup"
+  type        = string
+  default     = "us-central1"
+}
