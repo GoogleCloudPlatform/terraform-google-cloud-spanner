@@ -15,10 +15,14 @@
  */
 
 output "spanner_instance_id" {
-  description = "Instance ID  of spanner Instance"
+  description = "Spanner Instance ID"
   value = (
-    local.enable_instance_nn ?
-    google_spanner_instance.instance_num_node[0].id :
-    google_spanner_instance.instance_processing_units[0].id
+    !var.create_instance ?
+    data.google_spanner_instance.instance[0].id :
+    (
+      local.enable_instance_nn ?
+      google_spanner_instance.instance_num_node[0].id :
+      google_spanner_instance.instance_processing_units[0].id
+    )
   )
 }

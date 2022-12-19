@@ -49,7 +49,7 @@ locals {
 }
 
 resource "google_spanner_instance" "instance_num_node" {
-  count        = local.enable_instance_nn ? 1 : 0
+  count        = local.enable_instance_nn && var.create_instance ? 1 : 0
   project      = var.project_id
   config       = var.instance_config
   display_name = var.instance_display_name
@@ -59,7 +59,7 @@ resource "google_spanner_instance" "instance_num_node" {
 }
 
 resource "google_spanner_instance" "instance_processing_units" {
-  count            = local.enable_instance_nn ? 0 : 1
+  count            = !local.enable_instance_nn && var.create_instance ? 1 : 0
   project          = var.project_id
   config           = var.instance_config
   display_name     = var.instance_display_name
@@ -68,12 +68,22 @@ resource "google_spanner_instance" "instance_processing_units" {
   labels           = var.instance_labels
 }
 
+data "google_spanner_instance" "instance" {
+  count   = !var.create_instance ? 1 : 0
+  name    = var.instance_name
+  project = var.project_id
+}
+
 resource "google_spanner_instance_iam_member" "instance" {
   for_each = toset(var.instance_iam)
   instance = (
-    local.enable_instance_nn ?
-    google_spanner_instance.instance_num_node[0].name :
-    google_spanner_instance.instance_processing_units[0].name
+    !var.create_instance ?
+    data.google_spanner_instance.instance[0].name :
+    (
+      local.enable_instance_nn ?
+      google_spanner_instance.instance_num_node[0].name :
+      google_spanner_instance.instance_processing_units[0].name
+    )
   )
   project = var.project_id
   role    = element(split("=>", each.key), 1)
@@ -94,9 +104,13 @@ resource "google_kms_key_ring_iam_member" "key_ring" {
 resource "google_spanner_database" "database" {
   for_each = var.database_config
   instance = (
-    local.enable_instance_nn ?
-    google_spanner_instance.instance_num_node[0].name :
-    google_spanner_instance.instance_processing_units[0].name
+    !var.create_instance ?
+    data.google_spanner_instance.instance[0].name :
+    (
+      local.enable_instance_nn ?
+      google_spanner_instance.instance_num_node[0].name :
+      google_spanner_instance.instance_processing_units[0].name
+    )
   )
   project                  = var.project_id
   name                     = each.key
@@ -123,9 +137,13 @@ resource "google_spanner_database" "database" {
 resource "google_spanner_database_iam_member" "database" {
   for_each = toset(local.database_iam)
   instance = (
-    local.enable_instance_nn ?
-    google_spanner_instance.instance_num_node[0].name :
-    google_spanner_instance.instance_processing_units[0].name
+    !var.create_instance ?
+    data.google_spanner_instance.instance[0].name :
+    (
+      local.enable_instance_nn ?
+      google_spanner_instance.instance_num_node[0].name :
+      google_spanner_instance.instance_processing_units[0].name
+    )
   )
   project  = var.project_id
   database = element(split("|", each.key), 0)
@@ -138,6 +156,7 @@ resource "google_spanner_database_iam_member" "database" {
 }
 
 module "schedule_spanner_backup" {
+  count             = length(local.backup_args) > 0 ? 1 : 0
   source            = "./modules/schedule_spanner_backup"
   project_id        = var.project_id
   backup_schedule   = var.backup_schedule

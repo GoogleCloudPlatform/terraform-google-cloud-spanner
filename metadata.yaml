@@ -39,6 +39,11 @@ spec:
     type: string
     default: 0 */6 * * *
     required: false
+  - name: create_instance
+    description: 'Switch to use create OR use existing Spanner Instance '
+    type: bool
+    default: true
+    required: false
   - name: database_config
     description: 'The list of databases with their configuration to be created '
     type: |-
@@ -97,7 +102,7 @@ spec:
     required: true
   outputs:
   - name: spanner_instance_id
-    description: Instance ID  of spanner Instance
+    description: Spanner Instance ID
   roles:
   - level: Project
     roles:

@@ -27,7 +27,6 @@ module "cloud_spanner" {
   }
   instance_iam = [
     "user:ashwinknaik@google.com=>roles/spanner.databaseAdmin",
-    "user:ashwinknaik@google.com=>roles/spanner.databaseUser"
   ]
   instance_labels = {}
   database_config = {
@@ -37,7 +36,6 @@ module "cloud_spanner" {
         "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)",
         "CREATE TABLE t2 (t2 INT64 NOT NULL,) PRIMARY KEY(t2)"
       ]
-      kms_key_name        = "projects/ashwinknaik-314910/locations/europe-west1/keyRings/apigee-euw1-instance-kr/cryptoKeys/inst-disk"
       deletion_protection = false
       database_iam        = []
       enable_backup       = true

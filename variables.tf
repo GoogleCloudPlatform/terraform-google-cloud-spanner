@@ -52,11 +52,11 @@ variable "instance_size" {
   }
 }
 
-# variable "create_instance" {
-#   description = "Switch to use create OR use existing Spanner Instance "
-#   type        = bool
-#   default     = true
-# }
+variable "create_instance" {
+  description = "Switch to use create OR use existing Spanner Instance "
+  type        = bool
+  default     = true
+}
 
 variable "instance_iam" {
   description = "The list of permissions on spanner instance"
