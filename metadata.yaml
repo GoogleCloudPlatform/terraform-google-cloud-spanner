@@ -55,10 +55,12 @@ spec:
           database_iam             = list(string)
           enable_backup            = optional(bool)
           backup_retention         = optional(number)
+          create_db                = optional(bool)
         }))
     default:
       db1:
         backup_retention: 86400
+        create_db: true
         database_iam: []
         ddl: []
         deletion_protection: false

@@ -85,6 +85,7 @@ variable "database_config" {
     database_iam             = list(string)
     enable_backup            = optional(bool)
     backup_retention         = optional(number)
+    create_db                = optional(bool)
   }))
   default = {
     "db1" = {
@@ -94,6 +95,7 @@ variable "database_config" {
       database_iam             = []
       enable_backup            = true
       backup_retention         = 86400
+      create_db                = true
     }
   }
 }

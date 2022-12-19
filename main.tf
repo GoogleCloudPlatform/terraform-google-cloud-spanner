@@ -16,6 +16,12 @@
 
 locals {
   enable_instance_nn = var.instance_size.num_nodes != null ? true : false
+
+  database_creation_list = {
+    for k, v in var.database_config :
+    k => v if(try(v.create_db, null) == null ? false : v.create_db)
+  }
+
   database_iam = flatten([
     for k, v in var.database_config :
     [
@@ -102,7 +108,7 @@ resource "google_kms_key_ring_iam_member" "key_ring" {
 }
 
 resource "google_spanner_database" "database" {
-  for_each = var.database_config
+  for_each = local.database_creation_list
   instance = (
     !var.create_instance ?
     data.google_spanner_instance.instance[0].name :
