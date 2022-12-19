@@ -40,6 +40,7 @@ module "cloud_spanner" {
       database_iam        = []
       enable_backup       = true
       backup_retention    = 86400
+      create_db           = true
     }
   }
   backup_schedule = "0 */6 * * *"

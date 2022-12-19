@@ -43,6 +43,7 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
+| spanner\_db\_details | Spanner Databases information map |
 | spanner\_instance\_id | Spanner Instance ID |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

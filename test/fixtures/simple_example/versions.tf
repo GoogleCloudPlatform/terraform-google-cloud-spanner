@@ -14,23 +14,12 @@
  * limitations under the License.
  */
 
-output "spanner_instance_id" {
-  description = "Spanner Instance ID"
-  value = (
-    !var.create_instance ?
-    data.google_spanner_instance.instance[0].id :
-    (
-      local.enable_instance_nn ?
-      google_spanner_instance.instance_num_node[0].id :
-      google_spanner_instance.instance_processing_units[0].id
-    )
-  )
-}
-
-output "spanner_db_details" {
-  description = "Spanner Databases information map"
-  value = {
-    for k, v in local.database_creation_list :
-    k => google_spanner_database.database[k]
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
   }
+  required_version = ">= 0.13"
 }

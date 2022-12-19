@@ -13,8 +13,9 @@ This example illustrates how to use the `cloud-spanner` module.
 
 | Name | Description |
 |------|-------------|
-| spanner\_db\_details | The Spanner Database details. |
-| spanner\_instance\_id | The spanner\_instance\_id. |
+| project\_id | GCP Project ID. |
+| spanner\_db | The Spanner Database details. |
+| spanner\_instance\_id | The Spanner Instance Id. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -103,6 +103,8 @@ spec:
     type: string
     required: true
   outputs:
+  - name: spanner_db_details
+    description: Spanner Databases information map
   - name: spanner_instance_id
     description: Spanner Instance ID
   roles:
@@ -110,6 +112,13 @@ spec:
     roles:
     - roles/owner
   services:
+  - iam.googleapis.com
   - cloudresourcemanager.googleapis.com
   - storage-api.googleapis.com
   - serviceusage.googleapis.com
+  - workflows.googleapis.com
+  - cloudscheduler.googleapis.com
+  - spanner.googleapis.com
+  - pubsub.googleapis.com
+  - logging.googleapis.com
+  - storage.googleapis.com

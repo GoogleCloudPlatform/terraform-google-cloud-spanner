@@ -18,3 +18,9 @@ output "spanner_instance_id" {
   description = "The spanner_instance_id."
   value       = module.cloud_spanner.spanner_instance_id
 }
+
+
+output "spanner_db_details" {
+  description = "The Spanner Database details."
+  value       = module.cloud_spanner.spanner_db_details
+}
