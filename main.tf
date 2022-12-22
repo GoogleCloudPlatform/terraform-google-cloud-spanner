@@ -15,7 +15,10 @@
  */
 
 locals {
-  enable_instance_nn = var.instance_size.num_nodes != null ? true : false
+  enable_instance_nn = (
+    try(var.instance_size.num_nodes, 0) != null ?
+    true : false
+  )
 
   database_creation_list = {
     for k, v in var.database_config :
@@ -28,19 +31,6 @@ locals {
       for x in v.database_iam :
       "${k}|${element(split("=>", x), 0)}|${element(split("=>", x), 1)}"
     ]
-  ])
-
-  kms_crypto_keys = [
-    for k, v in var.database_config :
-    v.kms_key_name if try(v.kms_key_name, null) != null
-  ]
-
-  kms_key_rings = toset([
-    for k in local.kms_crypto_keys :
-    join(
-      "/",
-      slice(split("/", k), 0, length(split("/", k)) - 2)
-    )
   ])
 
   backup_args = [
@@ -96,17 +86,6 @@ resource "google_spanner_instance_iam_member" "instance" {
   member  = element(split("=>", each.key), 0)
 }
 
-data "google_project" "project" {
-  project_id = var.project_id
-}
-
-resource "google_kms_key_ring_iam_member" "key_ring" {
-  for_each    = local.kms_key_rings
-  key_ring_id = each.key
-  role        = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member      = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-spanner.iam.gserviceaccount.com"
-}
-
 resource "google_spanner_database" "database" {
   for_each = local.database_creation_list
   instance = (
@@ -134,10 +113,6 @@ resource "google_spanner_database" "database" {
       kms_key_name = encryption_config.value
     }
   }
-
-  depends_on = [
-    google_kms_key_ring_iam_member.key_ring
-  ]
 }
 
 resource "google_spanner_database_iam_member" "database" {

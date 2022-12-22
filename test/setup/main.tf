@@ -36,5 +36,6 @@ module "project" {
     "logging.googleapis.com",
     "storage.googleapis.com",
     "appengine.googleapis.com",
+    "cloudkms.googleapis.com",
   ]
 }
