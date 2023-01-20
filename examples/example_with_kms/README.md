@@ -15,6 +15,8 @@ This example illustrates how to use the `cloud-spanner` module.
 |------|-------------|
 | backup\_scheduler\_id | Backup Cloud Scheduler ID |
 | backup\_workflow\_id | Backup Workflow ID |
+| kms\_key\_id | KMS Key ID |
+| kms\_keyring\_id | KMS Key ID |
 | spanner\_db\_details | The Spanner Database details. |
 | spanner\_instance\_id | The spanner\_instance\_id. |
 

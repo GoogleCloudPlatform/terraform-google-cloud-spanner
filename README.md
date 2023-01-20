@@ -16,7 +16,31 @@ module "cloud_spanner" {
   version = "~> 0.1"
 
   project_id  = "<PROJECT ID>"
-  bucket_name = "gcs-test-bucket"
+  instance_name = "spanner-instance"
+  instance_display_name = "Sapnner DEV"
+  instance_size = {
+    # num_nodes = 2
+    processing_units = 200
+  }
+  instance_config = "regional-europe-west1"
+  instance_labels = {
+    "key" = "value"
+  }
+  database_config = {
+    db1 = {
+      version_retention_period = "3d"
+      ddl = [
+        "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)",
+        "CREATE TABLE t2 (t2 INT64 NOT NULL,) PRIMARY KEY(t2)"
+      ]
+      deletion_protection = false
+      database_iam        = []
+      enable_backup       = false
+      backup_retention    = 86400
+      create_db           = true
+    }
+  }
+  backup_schedule = "0 */6 * * *"
 }
 ```
 
