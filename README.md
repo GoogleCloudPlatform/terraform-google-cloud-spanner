@@ -1,10 +1,12 @@
 # terraform-google-cloud-spanner
 
-This module was generated from [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template/), which by default generates a module that simply creates a GCS bucket. As the module develops, this README should be updated.
+This module is used to create a [Cloud Spanner](https://cloud.google.com/spanner) Instance.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- Create a GCS bucket with the provided name
+- Creates a Cloud Spanner Instance
+- Creates a Cloud Spanner Databse
+- Creates a Cloud Spanner Databse Backup Scheduler
 
 ## Usage
 
@@ -91,7 +93,8 @@ The following dependencies must be available:
 A service account with the following roles must be used to provision
 the resources of this module:
 
-- Storage Admin: `roles/storage.admin`
+- Spanner Admin: `roles/spanner.admin`
+
 
 The [Project Factory module][project-factory-module] and the
 [IAM module][iam-module] may be used in combination to provision a
@@ -102,7 +105,18 @@ service account with the necessary roles applied.
 A project with the following APIs enabled must be used to host the
 resources of this module:
 
-- Google Cloud Storage JSON API: `storage-api.googleapis.com`
+- `iam.googleapis.com`
+- `cloudresourcemanager.googleapis.com`
+- `storage-api.googleapis.com`
+- `serviceusage.googleapis.com`
+- `workflows.googleapis.com`
+- `cloudscheduler.googleapis.com`
+- `spanner.googleapis.com`
+- `pubsub.googleapis.com`
+- `logging.googleapis.com`
+- `storage.googleapis.com`
+- `appengine.googleapis.com`
+- `cloudkms.googleapis.com`
 
 The [Project Factory module][project-factory-module] can be used to
 provision a project with the necessary APIs enabled.
