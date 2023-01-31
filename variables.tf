@@ -61,6 +61,7 @@ variable "create_instance" {
 variable "instance_iam" {
   description = "The list of permissions on spanner instance"
   type        = list(string)
+  default     = []
 }
 
 variable "instance_labels" {

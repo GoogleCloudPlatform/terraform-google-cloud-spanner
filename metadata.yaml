@@ -88,7 +88,8 @@ spec:
   - name: instance_iam
     description: The list of permissions on spanner instance
     type: list(string)
-    required: true
+    default: []
+    required: false
   - name: instance_labels
     description: A set of key/value label pairs to assign to the spanner instance
     type: map(string)

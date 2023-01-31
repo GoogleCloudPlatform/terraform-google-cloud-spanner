@@ -5,8 +5,8 @@ This module is used to create a [Cloud Spanner](https://cloud.google.com/spanner
 The resources/services/activations/deletions that this module will create/trigger are:
 
 - Creates a Cloud Spanner Instance
-- Creates a Cloud Spanner Databse
-- Creates a Cloud Spanner Databse Backup Scheduler
+- Creates a Cloud Spanner Database
+- Creates a Cloud Spanner Database Backup Scheduler
 
 ## Usage
 
@@ -60,7 +60,7 @@ Functional examples are included in the
 | database\_config | The list of databases with their configuration to be created | <pre>map(object({<br>    version_retention_period = string<br>    ddl                      = list(string)<br>    kms_key_name             = optional(string)<br>    deletion_protection      = bool<br>    database_iam             = list(string)<br>    enable_backup            = optional(bool)<br>    backup_retention         = optional(number)<br>    create_db                = optional(bool)<br>  }))</pre> | <pre>{<br>  "db1": {<br>    "backup_retention": 86400,<br>    "create_db": true,<br>    "database_iam": [],<br>    "ddl": [],<br>    "deletion_protection": false,<br>    "enable_backup": true,<br>    "version_retention_period": "3d"<br>  }<br>}</pre> | no |
 | instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | n/a | yes |
 | instance\_display\_name | The descriptive name for this instance as it appears in UIs. | `string` | `"regional-europe-west1"` | no |
-| instance\_iam | The list of permissions on spanner instance | `list(string)` | n/a | yes |
+| instance\_iam | The list of permissions on spanner instance | `list(string)` | `[]` | no |
 | instance\_labels | A set of key/value label pairs to assign to the spanner instance | `map(string)` | `{}` | no |
 | instance\_name | A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length. | `string` | `"regional-europe-west1"` | no |
 | instance\_size | The sizing configuration of Spanner Instance based on num of nodes OR instance processing units. | <pre>object({<br>    num_nodes        = optional(number)<br>    processing_units = optional(number)<br>  })</pre> | n/a | yes |

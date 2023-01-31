@@ -25,16 +25,12 @@ module "cloud_spanner" {
     # num_nodes = 2
     processing_units = 200
   }
-  instance_iam = [
-    "user:ashwinknaik@google.com=>roles/spanner.databaseAdmin",
-  ]
   instance_labels = {}
   database_config = {
     db1 = {
       version_retention_period = "3d"
       ddl = [
-        "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)",
-        "CREATE TABLE t2 (t2 INT64 NOT NULL,) PRIMARY KEY(t2)"
+        "CREATE TABLE t1 (t1 INT64 NOT NULL,t2 INT64 NOT NULL,) PRIMARY KEY(t1)",
       ]
       deletion_protection = false
       database_iam        = []

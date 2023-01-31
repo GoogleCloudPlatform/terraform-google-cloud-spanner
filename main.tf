@@ -113,6 +113,12 @@ resource "google_spanner_database" "database" {
       kms_key_name = encryption_config.value
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      ddl # added ignore as changes to ddl forces database replacement
+    ]
+  }
 }
 
 resource "google_spanner_database_iam_member" "database" {
