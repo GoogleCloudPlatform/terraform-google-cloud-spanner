@@ -30,7 +30,7 @@ main:
                     parent: ${eachValue.parent}
                     backupId: ${eachValue.backupId}
                     database: ${eachValue.database}
-                    expireTime: ${eachValue.expireTime}
+                    expireTime: ${time.format(sys.now() + eachValue.expireTime)}
                 result: backup_result
             - outerLoopAssign:
                 assign:
