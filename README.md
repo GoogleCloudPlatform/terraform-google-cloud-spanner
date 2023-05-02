@@ -19,7 +19,7 @@ module "cloud_spanner" {
 
   project_id  = "<PROJECT ID>"
   instance_name = "spanner-instance"
-  instance_display_name = "Sapnner DEV"
+  instance_display_name = "Spanner DEV"
   instance_size = {
     # num_nodes = 2
     processing_units = 200
