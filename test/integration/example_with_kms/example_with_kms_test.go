@@ -130,7 +130,7 @@ func TestExampleWithKms(t *testing.T) {
 		)
 		rawDecodedText, err := base64.StdEncoding.DecodeString(schedulerMatch.Get("httpTarget.body").String())
 		if err != nil {
-			assert.Fail("Unable to base64 deocde schdeuler args")
+			assert.Fail("Unable to base64 decode schdeuler args")
 		}
 
 		assert.Contains(
