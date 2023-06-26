@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,17 @@
 
 output "spanner_instance_id" {
   description = "Spanner Instance ID"
-  value = (
-    !var.create_instance ?
-    data.google_spanner_instance.instance[0].id :
-    (
-      local.enable_instance_nn ?
-      google_spanner_instance.instance_num_node[0].id :
-      google_spanner_instance.instance_processing_units[0].id
-    )
+  value = try(
+    google_spanner_instance.instance_num_node[0].id,
+    google_spanner_instance.instance_processing_units[0].id
   )
 }
 
 output "spanner_db_details" {
   description = "Spanner Databases information map"
   value = {
-    for k, v in local.database_creation_list :
-    k => google_spanner_database.database[k]
+    for db_name, _ in var.database_config :
+    db_name => google_spanner_database.database[db_name]
   }
 }
 

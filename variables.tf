@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,8 +60,8 @@ variable "create_instance" {
 
 variable "instance_iam" {
   description = "The list of permissions on spanner instance"
-  type        = list(string)
-  default     = []
+  type        = map(list(string))
+  default     = {}
 }
 
 variable "instance_labels" {
@@ -69,12 +69,6 @@ variable "instance_labels" {
   description = "A set of key/value label pairs to assign to the spanner instance"
   default     = {}
 }
-
-# variable "enable_default_db" {
-#   description = "Enable creation of default DB"
-#   type        = bool
-#   default     = false
-# }
 
 variable "database_config" {
   description = "The list of databases with their configuration to be created "

@@ -54,9 +54,11 @@ module "cloud_spanner" {
     # processing_units = 200
 
   }
-  instance_iam = [
-    "user:ashwinknaik@google.com=>roles/spanner.databaseAdmin",
-  ]
+  instance_iam = {
+    "roles/spanner.admin" = [
+      "group:noreply@google.com"
+    ]
+  }
   instance_labels = {}
   database_config = {
     kmsdb1 = {

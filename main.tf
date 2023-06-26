@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,6 @@
  */
 
 locals {
-  enable_instance_nn = (
-    try(var.instance_size.num_nodes, 0) != null ?
-    true : false
-  )
-
-  database_creation_list = {
-    for k, v in var.database_config :
-    k => v if(try(v.create_db, null) == null ? false : v.create_db)
-  }
-
   database_iam = flatten([
     for k, v in var.database_config :
     [
@@ -42,60 +32,50 @@ locals {
       "parent" : "projects/${var.project_id}/instances/${var.instance_name}"
     } if try(v.enable_backup, false)
   ]
+
+  instance_bindings_in_object = flatten([
+    for role, members in var.instance_iam : [for member in members : { role = role, member = member }]
+  ])
+
+  instance_bindings_iteratable = { for binding in local.instance_bindings_in_object : "${binding.role}--${binding.member}" => binding }
 }
 
 resource "google_spanner_instance" "instance_num_node" {
-  count        = local.enable_instance_nn && var.create_instance ? 1 : 0
+  count        = lookup(var.instance_size, "num_nodes", null) != null ? 1 : 0
   project      = var.project_id
   config       = var.instance_config
   display_name = var.instance_display_name
   name         = var.instance_name
-  num_nodes    = var.instance_size.num_nodes
+  num_nodes    = lookup(var.instance_size, "num_nodes")
   labels       = var.instance_labels
 }
 
 resource "google_spanner_instance" "instance_processing_units" {
-  count            = !local.enable_instance_nn && var.create_instance ? 1 : 0
+  count            = lookup(var.instance_size, "processing_units", null) != null ? 1 : 0
   project          = var.project_id
   config           = var.instance_config
   display_name     = var.instance_display_name
   name             = var.instance_name
-  processing_units = var.instance_size.processing_units
+  processing_units = lookup(var.instance_size, "processing_units")
   labels           = var.instance_labels
 }
 
-data "google_spanner_instance" "instance" {
-  count   = !var.create_instance ? 1 : 0
-  name    = var.instance_name
-  project = var.project_id
-}
-
 resource "google_spanner_instance_iam_member" "instance" {
-  for_each = toset(var.instance_iam)
-  instance = (
-    !var.create_instance ?
-    data.google_spanner_instance.instance[0].name :
-    (
-      local.enable_instance_nn ?
-      google_spanner_instance.instance_num_node[0].name :
-      google_spanner_instance.instance_processing_units[0].name
-    )
+  for_each = local.instance_bindings_iteratable
+  instance = try(
+    google_spanner_instance.instance_num_node[0].name,
+    google_spanner_instance.instance_processing_units[0].name
   )
   project = var.project_id
-  role    = element(split("=>", each.key), 1)
-  member  = element(split("=>", each.key), 0)
+  role    = each.value.role
+  member  = each.value.member
 }
 
 resource "google_spanner_database" "database" {
-  for_each = local.database_creation_list
-  instance = (
-    !var.create_instance ?
-    data.google_spanner_instance.instance[0].name :
-    (
-      local.enable_instance_nn ?
-      google_spanner_instance.instance_num_node[0].name :
-      google_spanner_instance.instance_processing_units[0].name
-    )
+  for_each = var.database_config
+  instance = try(
+    google_spanner_instance.instance_num_node[0].name,
+    google_spanner_instance.instance_processing_units[0].name
   )
   project                  = var.project_id
   name                     = each.key
@@ -104,13 +84,9 @@ resource "google_spanner_database" "database" {
   deletion_protection      = each.value.deletion_protection
 
   dynamic "encryption_config" {
-    for_each = (
-      try(each.value.kms_key_name, null) != null ?
-      tolist([each.value.kms_key_name]) :
-      []
-    )
+    for_each = lookup(each.value, "kms_key_name", null) != null ? [true] : []
     content {
-      kms_key_name = encryption_config.value
+      kms_key_name = lookup(each.value, "kms_key_name", null)
     }
   }
 
@@ -123,14 +99,9 @@ resource "google_spanner_database" "database" {
 
 resource "google_spanner_database_iam_member" "database" {
   for_each = toset(local.database_iam)
-  instance = (
-    !var.create_instance ?
-    data.google_spanner_instance.instance[0].name :
-    (
-      local.enable_instance_nn ?
-      google_spanner_instance.instance_num_node[0].name :
-      google_spanner_instance.instance_processing_units[0].name
-    )
+  instance = try(
+    google_spanner_instance.instance_num_node[0].name,
+    google_spanner_instance.instance_processing_units[0].name
   )
   project  = var.project_id
   database = element(split("|", each.key), 0)
