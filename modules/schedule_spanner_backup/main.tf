@@ -34,7 +34,8 @@ module "service_account_workflow" {
 }
 
 module "workflow" {
-  source                 = "github.com/GoogleCloudPlatform/terraform-google-cloud-workflows?ref=main"
+  source                 = "GoogleCloudPlatform/cloud-workflows/google"
+  version                = "0.1.0"
   project_id             = var.project_id
   workflow_name          = "spanner-backup-workflow"
   region                 = var.backup_schedule_region
