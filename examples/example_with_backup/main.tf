@@ -26,7 +26,7 @@ module "cloud_spanner" {
     processing_units = 200
   }
   instance_iam = [
-    "user:ashwinknaik@google.com=>roles/spanner.databaseAdmin",
+    "user:noreply@google.com=>roles/spanner.databaseAdmin",
   ]
   instance_labels = {}
   database_config = {
