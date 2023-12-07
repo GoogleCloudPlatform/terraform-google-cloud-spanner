@@ -32,5 +32,5 @@ variable "backup_schedule_region" {
 
 variable "workflow_argument" {
   description = "The arguments to workflow as JSON encoded"
-  type        = string
+  type        = optional(map(any))
 }
