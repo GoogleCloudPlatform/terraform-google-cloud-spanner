@@ -8,6 +8,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## 0.1.0 (2023-12-21)
+
+
+### Miscellaneous Chores
+
+* release 0.1.0 ([4878830](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/487883073cc040db6d35ce59567ffaed22d6d887))
+
 ## [0.1.0](https://github.com/terraform-google-modules/terraform-google-cloud-spanner/releases/tag/v0.1.0) - 20XX-YY-ZZ
 
 ### Features
