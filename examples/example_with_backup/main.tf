@@ -17,7 +17,7 @@
 
 module "cloud_spanner" {
   source  = "GoogleCloudPlatform/cloud-spanner/google"
-  version = "~> REPLACE-AFTER-RELEASE"
+  version = "~> 0.1"
 
   project_id            = var.project_id
   instance_name         = "backup-spanner-name"
