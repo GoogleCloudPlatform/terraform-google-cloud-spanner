@@ -44,7 +44,9 @@ resource "google_kms_key_ring_iam_member" "key_ring" {
 }
 
 module "cloud_spanner" {
-  source                = "../.."
+  source  = "GoogleCloudPlatform/cloud-spanner/google"
+  version = "~> 0.1"
+
   project_id            = var.project_id
   instance_name         = "kms-spanner-name"
   instance_display_name = "kms-spanner-dispname"
