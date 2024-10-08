@@ -15,7 +15,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "cloud_spanner" {
   source  = "terraform-google-modules/cloud-spanner/google"
-  version = "~> 0.2"
+  version = "~> 0.3"
 
   project_id  = "<PROJECT ID>"
   instance_name = "spanner-instance"
