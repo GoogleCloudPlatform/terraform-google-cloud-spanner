@@ -16,7 +16,7 @@
 
 module "service_account_scheduler" {
   source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.1.1"
+  version    = "~> 4.4.0"
   project_id = var.project_id
   prefix     = "spanner-backup-scheduler"
   names      = ["1"]
@@ -26,7 +26,7 @@ module "service_account_scheduler" {
 
 module "service_account_workflow" {
   source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 4.1.1"
+  version       = "~> 4.4.0"
   project_id    = var.project_id
   prefix        = "spanner-backup-workflow"
   names         = ["1"]
