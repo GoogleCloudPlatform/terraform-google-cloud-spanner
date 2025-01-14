@@ -22,4 +22,8 @@ terraform {
       version = ">= 3.53, < 7"
     }
   }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-cloud-spanner:schedule_spanner_backup/v0.3.0"
+  }
 }
