@@ -40,6 +40,7 @@ locals {
       "database" : "projects/${var.project_id}/instances/${var.instance_name}/databases/${k}",
       "expireTime" : v.backup_retention,
       "parent" : "projects/${var.project_id}/instances/${var.instance_name}"
+
     } if try(v.enable_backup, false)
   ]
 }
@@ -52,6 +53,34 @@ resource "google_spanner_instance" "instance_num_node" {
   name         = var.instance_name
   num_nodes    = var.instance_size.num_nodes
   labels       = var.instance_labels
+
+  autoscaling_config {
+    autoscaling_limits {
+      min_processing_units = var.min_processing_units
+      max_processing_units = var.max_processing_units
+      min_nodes            = var.min_nodes
+      max_nodes            = var.max_nodes
+    }
+    autoscaling_targets {
+      high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
+      storage_utilization_percent           = var.storage_utilization_percent
+    }
+    asymmetric_autoscaling_options {
+      replica_selection {
+        location = var.replica_location
+      }
+      overrides {
+        autoscaling_limits {
+          min_nodes = var.override_min_nodes
+          max_nodes = var.override_max_nodes
+        }
+      }
+    }
+  }
+
+  edition                      = var.edition
+  default_backup_schedule_type = var.default_backup_schedule_type
+  force_destroy                = var.force_destroy
 }
 
 resource "google_spanner_instance" "instance_processing_units" {
@@ -143,10 +172,15 @@ resource "google_spanner_database_iam_member" "database" {
 }
 
 module "schedule_spanner_backup" {
-  count                  = length(local.backup_args) > 0 ? 1 : 0
+  for_each = { for idx, backup_arg in local.backup_args : idx => backup_arg }
+
   source                 = "./modules/schedule_spanner_backup"
   project_id             = var.project_id
-  backup_schedule        = var.backup_schedule
-  workflow_argument      = jsonencode(local.backup_args)
-  backup_schedule_region = var.backup_schedule_region
+  instance_name          = var.instance_name
+  database_name          = each.value.database
+  retention_duration     = each.value.expireTime
+  cron_spec_text         = var.backup_schedule
+  backup_schedule_name   = "backup-schedule-${each.key}"
+  use_full_backup_spec   = var.use_full_backup_spec
+  use_incremental_backup_spec = var.use_incremental_backup_spec
 }

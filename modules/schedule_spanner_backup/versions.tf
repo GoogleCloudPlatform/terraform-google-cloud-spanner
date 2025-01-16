@@ -15,15 +15,30 @@
  */
 
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.3"
   required_providers {
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.1"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1"
+    }
     google = {
       source  = "hashicorp/google"
-      version = ">= 3.53, < 7"
+      version = ">= 6.1, < 7"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 6.1, < 7"
     }
   }
 
   provider_meta "google" {
     module_name = "blueprints/terraform/terraform-google-cloud-spanner:schedule_spanner_backup/v0.3.0"
+  }
+  provider_meta "google-beta" {
+    module_name = "blueprints/terraform/terraform-google-cloud-spanner:schedule_spanner_backup/v0.3.1"
   }
 }

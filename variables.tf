@@ -107,8 +107,98 @@ variable "backup_schedule" {
   default     = "0 */6 * * *"
 }
 
-variable "backup_schedule_region" {
-  description = "The schedule to be enabled on scheduler to trigger spanner DB backup"
+variable "min_processing_units" {
+  description = "Minimum number of processing units for autoscaling."
+  type        = number
+  default     = 1000
+}
+
+variable "max_processing_units" {
+  description = "Maximum number of processing units for autoscaling."
+  type        = number
+  default     = 3000
+}
+
+variable "min_nodes" {
+  description = "Minimum number of nodes for autoscaling."
+  type        = number
+  default     = 1
+}
+
+variable "max_nodes" {
+  description = "Maximum number of nodes for autoscaling."
+  type        = number
+  default     = 3
+}
+
+variable "high_priority_cpu_utilization_percent" {
+  description = "Target high priority CPU utilization percentage for autoscaling."
+  type        = number
+  default     = 60
+}
+
+variable "storage_utilization_percent" {
+  description = "Target storage utilization percentage for autoscaling."
+  type        = number
+  default     = 70
+}
+
+variable "replica_location" {
+  description = "Location of the replica for asymmetric autoscaling."
   type        = string
   default     = "us-central1"
+}
+
+variable "override_min_nodes" {
+  description = "Minimum number of nodes for specific replica overrides."
+  type        = number
+  default     = 1
+}
+
+variable "override_max_nodes" {
+  description = "Maximum number of nodes for specific replica overrides."
+  type        = number
+  default     = 3
+}
+
+variable "edition" {
+  description = "The edition of the Spanner instance."
+  type        = string
+  default     = "STANDARD"
+}
+
+variable "default_backup_schedule_type" {
+  description = "Default backup schedule type for new databases."
+  type        = string
+  default     = "NONE"
+}
+
+variable "force_destroy" {
+  description = "Whether to force destroy the instance and its backups."
+  type        = bool
+  default     = false
+}
+
+variable "retention_duration" {
+  description = "The duration for which the backup should be retained."
+  type        = string
+  default     = "604800s"  // Example: 7 days
+}
+
+variable "cron_spec_text" {
+  description = "The cron expression for the backup schedule."
+  type        = string
+  default     = "0 2 * * *"  // Example: once a day at 2 AM UTC
+}
+
+variable "use_full_backup_spec" {
+  description = "Whether to use full backup specification."
+  type        = bool
+  default     = true
+}
+
+variable "use_incremental_backup_spec" {
+  description = "Whether to use incremental backup specification."
+  type        = bool
+  default     = false
 }

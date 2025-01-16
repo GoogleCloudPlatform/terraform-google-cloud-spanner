@@ -14,47 +14,31 @@
  * limitations under the License.
  */
 
-module "service_account_scheduler" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.1.1"
-  project_id = var.project_id
-  prefix     = "spanner-backup-scheduler"
-  names      = ["1"]
+resource "google_spanner_backup_schedule" "backup_schedule" {
+  project            = var.project_id
+  retention_duration = var.retention_duration
+  instance           = var.instance_name
+  database           = var.database_name
+  name               = var.backup_schedule_name
 
-  project_roles = ["${var.project_id}=>roles/workflows.invoker"]
-}
-
-module "service_account_workflow" {
-  source        = "terraform-google-modules/service-accounts/google"
-  version       = "~> 4.1.1"
-  project_id    = var.project_id
-  prefix        = "spanner-backup-workflow"
-  names         = ["1"]
-  project_roles = ["${var.project_id}=>roles/spanner.backupAdmin"]
-}
-
-module "workflow" {
-  source                 = "github.com/GoogleCloudPlatform/terraform-google-cloud-workflows?ref=v0.1.1"
-  project_id             = var.project_id
-  workflow_name          = "spanner-backup-workflow"
-  region                 = var.backup_schedule_region
-  service_account_email  = module.service_account_workflow.email
-  service_account_create = false
-
-  workflow_trigger = {
-    cloud_scheduler = {
-      name                  = "spanner-backup-job"
-      cron                  = var.backup_schedule
-      time_zone             = "America/New_York"
-      deadline              = "320s"
-      service_account_email = module.service_account_scheduler.email
-      argument              = var.workflow_argument
+  spec {
+    cron_spec {
+      text = var.cron_spec_text
     }
   }
-  workflow_source = file("${path.module}/spanner_backup.yml")
 
-  depends_on = [
-    module.service_account_scheduler,
-    module.service_account_workflow
-  ]
+  # Conditionally include full_backup_spec or incremental_backup_spec
+  dynamic "full_backup_spec" {
+    for_each = var.use_full_backup_spec ? [1] : []
+    content {
+      full_backup_spec {}
+    }
+  }
+
+  dynamic "incremental_backup_spec" {
+    for_each = var.use_incremental_backup_spec ? [1] : []
+    content {
+      incremental_backup_spec {}
+    }
+  }
 }
