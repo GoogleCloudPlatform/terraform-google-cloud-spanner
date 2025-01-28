@@ -40,7 +40,6 @@ locals {
       "database" : "projects/${var.project_id}/instances/${var.instance_name}/databases/${k}",
       "expireTime" : v.backup_retention,
       "parent" : "projects/${var.project_id}/instances/${var.instance_name}"
-
     } if try(v.enable_backup, false)
   ]
 }
@@ -174,13 +173,13 @@ resource "google_spanner_database_iam_member" "database" {
 module "schedule_spanner_backup" {
   for_each = { for idx, backup_arg in local.backup_args : idx => backup_arg }
 
-  source                 = "./modules/schedule_spanner_backup"
-  project_id             = var.project_id
-  instance_name          = var.instance_name
-  database_name          = each.value.database
-  retention_duration     = each.value.expireTime
-  cron_spec_text         = var.backup_schedule
-  backup_schedule_name   = "backup-schedule-${each.key}"
-  use_full_backup_spec   = var.use_full_backup_spec
+  source                      = "./modules/schedule_spanner_backup"
+  project_id                  = var.project_id
+  instance_name               = var.instance_name
+  database_name               = each.value.database
+  retention_duration          = each.value.expireTime
+  cron_spec_text              = var.cron_spec_text
+  backup_schedule_name        = "backup-schedule-${each.key}"
+  use_full_backup_spec        = var.use_full_backup_spec
   use_incremental_backup_spec = var.use_incremental_backup_spec
 }

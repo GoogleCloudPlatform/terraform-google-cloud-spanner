@@ -101,10 +101,10 @@ variable "database_config" {
   }
 }
 
-variable "backup_schedule" {
-  description = "The schedule to be enabled on scheduler to trigger spanner DB backup"
+variable "cron_spec_text" {
+  description = "The cron expression for the backup schedule."
   type        = string
-  default     = "0 */6 * * *"
+  default     = "0 2 * * *" // Example: once a day at 2 AM UTC
 }
 
 variable "min_processing_units" {
@@ -177,18 +177,6 @@ variable "force_destroy" {
   description = "Whether to force destroy the instance and its backups."
   type        = bool
   default     = false
-}
-
-variable "retention_duration" {
-  description = "The duration for which the backup should be retained."
-  type        = string
-  default     = "604800s"  // Example: 7 days
-}
-
-variable "cron_spec_text" {
-  description = "The cron expression for the backup schedule."
-  type        = string
-  default     = "0 2 * * *"  // Example: once a day at 2 AM UTC
 }
 
 variable "use_full_backup_spec" {

@@ -20,29 +20,29 @@ variable "project_id" {
 }
 
 variable "instance_name" {
-    description = "The name of the Spanner instance"
-    type        = string
+  description = "The name of the Spanner instance"
+  type        = string
 }
 
 variable "database_name" {
-    description = "The name of the Spanner database"
-    type        = string
+  description = "The name of the Spanner database"
+  type        = string
 }
 
 variable "backup_schedule_name" {
-    description = "The name of the backup schedule"
-    type        = string
+  description = "The name of the backup schedule"
+  type        = string
 }
 
 variable "cron_spec_text" {
-    description = "The CRON spec text"
-    type        = string
+  description = "The CRON spec text"
+  type        = string
 }
 
 variable "retention_duration" {
   description = "The duration for which the backup should be retained."
   type        = string
-  default     = "604800s"  // Example: 7 days
+  default     = "604800s" // Example: 7 days
 }
 
 variable "use_full_backup_spec" {

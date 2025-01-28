@@ -49,10 +49,8 @@ credentials.json
 
 **/terraform.tfstate*
 **/.terraform*
-**/backend.tf
 **/terraform.tfplan
 **/values-*.yaml
 
 .idea
 .kitchen
-credentials.json
