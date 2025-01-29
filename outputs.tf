@@ -37,5 +37,5 @@ output "spanner_db_details" {
 
 output "spanner_schedule_backup_id" {
   description = "Spanner Backup Workflow ID"
-  value       = length(local.backup_args) > 0 ? module.schedule_spanner_backup[0].workflow_id : null
+  value       = length(local.backup_args) > 0 ? module.schedule_spanner_backup[0].spanner_schedule_backup_id : null
 }

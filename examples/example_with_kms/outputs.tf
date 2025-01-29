@@ -24,14 +24,9 @@ output "spanner_db_details" {
   value       = module.cloud_spanner.spanner_db_details
 }
 
-output "backup_workflow_id" {
-  description = "Backup Workflow ID"
-  value       = module.cloud_spanner.workflow_id
-}
-
-output "backup_scheduler_id" {
-  description = "Backup Cloud Scheduler ID"
-  value       = module.cloud_spanner.cloud_scheduler_id
+output "backup_id" {
+  description = "Backup ID"
+  value       = module.cloud_spanner.spanner_schedule_backup_id
 }
 
 output "kms_keyring_id" {

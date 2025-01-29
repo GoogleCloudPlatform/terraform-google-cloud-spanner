@@ -13,8 +13,7 @@ This example illustrates how to use the `cloud-spanner` module.
 
 | Name | Description |
 |------|-------------|
-| backup\_scheduler\_id | Backup Cloud Scheduler ID |
-| backup\_workflow\_id | Backup Workflow ID |
+| backup\_id | Backup ID |
 | spanner\_db\_details | The Spanner Database details. |
 | spanner\_instance\_id | The spanner\_instance\_id. |
 
