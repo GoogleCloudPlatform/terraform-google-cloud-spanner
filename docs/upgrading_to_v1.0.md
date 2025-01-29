@@ -5,17 +5,6 @@ release.
 ### Google Cloud Platform Provider upgrade
 The Terraform Cloud Spanner Module now requires version 6.1 or higher of the Google Cloud Platform Providers.
 
-```diff
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
--      version = ">= 3.53, < 7"
-+      version = ">= 6.1, < 7"
-    }
-}
-```
-
 ### Backup Module Output Changes
 The Terraform Cloud Spanner Backup Module now outputs the `spanner_schedule_backup_id` instead of `workflow_id` and `scheduler_job_id`.:
 
@@ -33,3 +22,5 @@ The Terraform Cloud Spanner Backup Module now outputs the `spanner_schedule_back
 +  value       = google_spanner_backup_schedule.backup_schedule.id
 }
 ```
+
+you must now specify `database_name`, `backup_schedule_name`, `cron_spec_text`, `retention_duration`, `use_full_backup_spec` and `use_incremental_backup_spec` instead of `backup_schedule`, `backup_schedule_region` and `workflow_argument`.
