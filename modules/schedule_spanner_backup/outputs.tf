@@ -16,5 +16,5 @@
 
 output "spanner_schedule_backup_id" {
   description = "Spanner Schedule Backup ID"
-  value       = module.workflow.workflow_id
+  value       = google_spanner_backup_schedule.backup_schedule.id
 }

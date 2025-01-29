@@ -27,18 +27,15 @@ resource "google_spanner_backup_schedule" "backup_schedule" {
     }
   }
 
-  # Conditionally include full_backup_spec or incremental_backup_spec
   dynamic "full_backup_spec" {
     for_each = var.use_full_backup_spec ? [1] : []
     content {
-      full_backup_spec {}
     }
   }
 
   dynamic "incremental_backup_spec" {
     for_each = var.use_incremental_backup_spec ? [1] : []
     content {
-      incremental_backup_spec {}
     }
   }
 }
