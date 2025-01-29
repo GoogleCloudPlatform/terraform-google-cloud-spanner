@@ -45,5 +45,5 @@ module "cloud_spanner" {
       create_db           = true
     }
   }
-  backup_schedule = "0 */6 * * *"
+  cron_spec_text = "0 */6 * * *"
 }

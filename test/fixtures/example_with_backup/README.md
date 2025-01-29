@@ -13,8 +13,7 @@ This example illustrates how to use the `cloud-spanner` module.
 
 | Name | Description |
 |------|-------------|
-| backup\_scheduler\_id | Cloud Schedulere ID for scheduling backup job. |
-| backup\_workflow\_id | Cloud Workflow ID for backup job. |
+| backup\_id | Cloud Spanner backup ID. |
 | project\_id | GCP Project ID. |
 | spanner\_db | The Spanner Database details. |
 | spanner\_instance\_id | The Spanner Instance Id. |

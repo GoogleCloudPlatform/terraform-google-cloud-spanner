@@ -74,7 +74,7 @@ module "cloud_spanner" {
       create_db           = true
     }
   }
-  backup_schedule = "0 */6 * * *"
+  cron_spec_text = "0 */6 * * *"
 
   depends_on = [
     google_kms_key_ring_iam_member.key_ring

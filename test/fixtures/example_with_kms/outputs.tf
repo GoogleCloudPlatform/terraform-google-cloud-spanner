@@ -29,14 +29,9 @@ output "project_id" {
   value       = var.project_id
 }
 
-output "backup_workflow_id" {
-  description = "Cloud Workflow ID for backup job."
-  value       = module.example_with_kms.backup_workflow_id
-}
-
-output "backup_scheduler_id" {
-  description = "Cloud Schedulere ID for scheduling backup job."
-  value       = module.example_with_kms.backup_scheduler_id
+output "backup_id" {
+  description = "Cloud Spanner backup ID."
+  value       = module.example_with_kms.backup_id
 }
 
 output "kms_keyring_id" {

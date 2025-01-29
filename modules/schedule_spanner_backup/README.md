@@ -28,17 +28,20 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| backup\_schedule | The Backup Schedule in CRON format | `string` | n/a | yes |
-| backup\_schedule\_region | The schedule to be enabled on scheduler to trigger spanner DB backup | `string` | `"us-central1"` | no |
+| backup\_schedule\_name | The name of the backup schedule | `string` | n/a | yes |
+| cron\_spec\_text | The CRON spec text | `string` | n/a | yes |
+| database\_name | The name of the Spanner database | `string` | n/a | yes |
+| instance\_name | The name of the Spanner instance | `string` | n/a | yes |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
-| workflow\_argument | The arguments to workflow as JSON encoded | `string` | n/a | yes |
+| retention\_duration | The duration for which the backup should be retained. | `string` | `"604800s"` | no |
+| use\_full\_backup\_spec | Whether to use full backup specification. | `bool` | `true` | no |
+| use\_incremental\_backup\_spec | Whether to use incremental backup specification. | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| scheduler\_job\_id | Google Cloud scheduler job id |
-| workflow\_id | The id  of the workflow. |
+| spanner\_schedule\_backup\_id | Spanner Schedule Backup ID |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

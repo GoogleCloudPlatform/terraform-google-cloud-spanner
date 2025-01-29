@@ -46,3 +46,11 @@ credentials.json
 
 # tf lock file
 .terraform.lock.hcl
+
+**/terraform.tfstate*
+**/.terraform*
+**/terraform.tfplan
+**/values-*.yaml
+
+.idea
+.kitchen

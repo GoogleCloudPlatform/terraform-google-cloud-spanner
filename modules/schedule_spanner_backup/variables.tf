@@ -19,18 +19,40 @@ variable "project_id" {
   type        = string
 }
 
-variable "backup_schedule" {
-  description = "The Backup Schedule in CRON format"
+variable "instance_name" {
+  description = "The name of the Spanner instance"
   type        = string
 }
 
-variable "backup_schedule_region" {
-  description = "The schedule to be enabled on scheduler to trigger spanner DB backup"
+variable "database_name" {
+  description = "The name of the Spanner database"
   type        = string
-  default     = "us-central1"
 }
 
-variable "workflow_argument" {
-  description = "The arguments to workflow as JSON encoded"
+variable "backup_schedule_name" {
+  description = "The name of the backup schedule"
   type        = string
+}
+
+variable "cron_spec_text" {
+  description = "The CRON spec text"
+  type        = string
+}
+
+variable "retention_duration" {
+  description = "The duration for which the backup should be retained."
+  type        = string
+  default     = "604800s" // Example: 7 days
+}
+
+variable "use_full_backup_spec" {
+  description = "Whether to use full backup specification."
+  type        = bool
+  default     = true
+}
+
+variable "use_incremental_backup_spec" {
+  description = "Whether to use incremental backup specification."
+  type        = bool
+  default     = false
 }

@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-output "workflow_id" {
-  description = "The id  of the workflow."
-  value       = module.workflow.workflow_id
-}
-
-output "scheduler_job_id" {
-  description = "Google Cloud scheduler job id"
-  value       = module.workflow.scheduler_job_id
+output "spanner_schedule_backup_id" {
+  description = "Spanner Schedule Backup ID"
+  value       = google_spanner_backup_schedule.backup_schedule.id
 }
