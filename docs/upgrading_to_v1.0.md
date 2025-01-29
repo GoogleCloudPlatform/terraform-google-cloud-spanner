@@ -23,4 +23,4 @@ The Terraform Cloud Spanner Backup Module now outputs the `spanner_schedule_back
 }
 ```
 
-you must now specify `database_name`, `backup_schedule_name`, `cron_spec_text`, `retention_duration`, `use_full_backup_spec` and `use_incremental_backup_spec` instead of `backup_schedule`, `backup_schedule_region` and `workflow_argument`.
+You must now specify `database_name`, `backup_schedule_name`, `cron_spec_text`, `retention_duration`, `use_full_backup_spec`, and `use_incremental_backup_spec` instead of `backup_schedule`, `backup_schedule_region`, and `workflow_argument`.
