@@ -13,7 +13,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "cloud_spanner" {
   source  = "terraform-google-modules/cloud-spanner/google"
-  version = "~> 0.3"
+  version = "~> 1.0"
 
   project_id  = "<PROJECT ID>"
   bucket_name = "gcs-test-bucket"

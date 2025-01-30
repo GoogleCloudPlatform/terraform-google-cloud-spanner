@@ -36,9 +36,9 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-spanner:schedule_spanner_backup/v0.3.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-spanner:schedule_spanner_backup/v1.0.0"
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-spanner:schedule_spanner_backup/v0.3.1"
+    module_name = "blueprints/terraform/terraform-google-cloud-spanner:schedule_spanner_backup/v1.0.0"
   }
 }

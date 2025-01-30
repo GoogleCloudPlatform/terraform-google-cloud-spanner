@@ -8,6 +8,17 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [1.0.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v0.3.0...v1.0.0) (2025-01-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=6.1:** add support of editions, autoscaler and scheduling backup on Spanner ([#54](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/54))
+
+### Features
+
+* **TPG>=6.1:** add support of editions, autoscaler and scheduling backup on Spanner ([#54](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/54)) ([6366f3b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/6366f3ba4b8b9359c45f0de50434da46301084cd))
+
 ## [0.3.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v0.2.0...v0.3.0) (2024-10-08)
 
 
