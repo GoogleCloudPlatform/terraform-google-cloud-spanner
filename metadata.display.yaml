@@ -1,0 +1,101 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-spanner-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: terraform-google-cloud-spanner
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
+      sourceType: git
+  ui:
+    input:
+      variables:
+        create_instance:
+          name: create_instance
+          title: Create Instance
+        cron_spec_text:
+          name: cron_spec_text
+          title: Cron Spec Text
+        database_config:
+          name: database_config
+          title: Database Config
+        default_backup_schedule_type:
+          name: default_backup_schedule_type
+          title: Default Backup Schedule Type
+        edition:
+          name: edition
+          title: Edition
+        force_destroy:
+          name: force_destroy
+          title: Force Destroy
+        high_priority_cpu_utilization_percent:
+          name: high_priority_cpu_utilization_percent
+          title: High Priority Cpu Utilization Percent
+        instance_config:
+          name: instance_config
+          title: Instance Config
+        instance_display_name:
+          name: instance_display_name
+          title: Instance Display Name
+        instance_iam:
+          name: instance_iam
+          title: Instance Iam
+        instance_labels:
+          name: instance_labels
+          title: Instance Labels
+        instance_name:
+          name: instance_name
+          title: Instance Name
+        instance_size:
+          name: instance_size
+          title: Instance Size
+        max_nodes:
+          name: max_nodes
+          title: Max Nodes
+        max_processing_units:
+          name: max_processing_units
+          title: Max Processing Units
+        min_nodes:
+          name: min_nodes
+          title: Min Nodes
+        min_processing_units:
+          name: min_processing_units
+          title: Min Processing Units
+        override_max_nodes:
+          name: override_max_nodes
+          title: Override Max Nodes
+        override_min_nodes:
+          name: override_min_nodes
+          title: Override Min Nodes
+        project_id:
+          name: project_id
+          title: Project Id
+        replica_location:
+          name: replica_location
+          title: Replica Location
+        storage_utilization_percent:
+          name: storage_utilization_percent
+          title: Storage Utilization Percent
+        use_full_backup_spec:
+          name: use_full_backup_spec
+          title: Use Full Backup Spec
+        use_incremental_backup_spec:
+          name: use_incremental_backup_spec
+          title: Use Incremental Backup Spec

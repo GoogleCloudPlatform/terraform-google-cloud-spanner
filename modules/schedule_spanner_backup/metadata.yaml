@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,57 +19,87 @@ metadata:
   annotations:
     config.kubernetes.io/local-config: "true"
 spec:
-  title: terraform-google-cloud-spanner
-  source:
-    repo: https://github.com/anaik91/terraform-google-cloud-spanner.git
-    sourceType: git
-  actuationTool:
-    type: Terraform
-    version: '>= 0.13'
-  examples:
-  - name: example_with_backup
-    location: examples/example_with_backup
-  - name: example_with_kms
-    location: examples/example_with_kms
-  - name: simple_example
-    location: examples/simple_example
-  variables:
-  - name: backup_schedule
-    description: The Backup Schedule in CRON format
-    type: string
-    required: true
-  - name: backup_schedule_region
-    description: The schedule to be enabled on scheduler to trigger spanner DB backup
-    type: string
-    default: us-central1
-    required: false
-  - name: project_id
-    description: The project ID to deploy to
-    type: string
-    required: true
-  - name: workflow_argument
-    description: The arguments to workflow as JSON encoded
-    type: string
-    required: true
-  outputs:
-  - name: scheduler_job_id
-    description: Google Cloud scheduler job id
-  - name: workflow_id
-    description: The id  of the workflow.
-  roles:
-  - level: Project
+  info:
+    title: terraform-google-cloud-spanner
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
+      sourceType: git
+      dir: /modules/schedule_spanner_backup
+    version: 1.0.0
+    actuationTool:
+      flavor: Terraform
+      version: ">= 1.3"
+    description: {}
+    icon: assets/icon.png
+  content:
+    examples:
+      - name: example_with_backup
+        location: examples/example_with_backup
+      - name: example_with_kms
+        location: examples/example_with_kms
+      - name: simple_example
+        location: examples/simple_example
+  interfaces:
+    variables:
+      - name: project_id
+        description: The project ID to deploy to
+        varType: string
+        required: true
+      - name: instance_name
+        description: The name of the Spanner instance
+        varType: string
+        required: true
+      - name: database_name
+        description: The name of the Spanner database
+        varType: string
+        required: true
+      - name: backup_schedule_name
+        description: The name of the backup schedule
+        varType: string
+        required: true
+      - name: cron_spec_text
+        description: The CRON spec text
+        varType: string
+        required: true
+      - name: retention_duration
+        description: The duration for which the backup should be retained.
+        varType: string
+        defaultValue: 604800s
+      - name: use_full_backup_spec
+        description: Whether to use full backup specification.
+        varType: bool
+        defaultValue: true
+      - name: use_incremental_backup_spec
+        description: Whether to use incremental backup specification.
+        varType: bool
+        defaultValue: false
+    outputs:
+      - name: spanner_schedule_backup_id
+        description: Spanner Schedule Backup ID
+  requirements:
     roles:
-    - roles/owner
-  services:
-  - iam.googleapis.com
-  - cloudresourcemanager.googleapis.com
-  - storage-api.googleapis.com
-  - serviceusage.googleapis.com
-  - workflows.googleapis.com
-  - cloudscheduler.googleapis.com
-  - spanner.googleapis.com
-  - pubsub.googleapis.com
-  - logging.googleapis.com
-  - storage.googleapis.com
-  - appengine.googleapis.com
-  - cloudkms.googleapis.com
+      - level: Project
+        roles:
+          - roles/owner
+    services:
+      - iam.googleapis.com
+      - cloudresourcemanager.googleapis.com
+      - storage-api.googleapis.com
+      - serviceusage.googleapis.com
+      - workflows.googleapis.com
+      - cloudscheduler.googleapis.com
+      - spanner.googleapis.com
+      - pubsub.googleapis.com
+      - logging.googleapis.com
+      - storage.googleapis.com
+      - appengine.googleapis.com
+      - cloudkms.googleapis.com
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 6.1, < 7"
+      - source: hashicorp/google-beta
+        version: ">= 6.1, < 7"
+      - source: hashicorp/null
+        version: ~> 3.1
+      - source: hashicorp/random
+        version: ~> 3.1
