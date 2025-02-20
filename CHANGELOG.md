@@ -8,6 +8,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [1.0.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v1.0.0...v1.0.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* update generate docs command to correctly generate metadata files ([#61](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/61)) ([e144e40](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/e144e400be56472678f21597e010d822f4b9576f))
+
 ## [1.0.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v0.3.0...v1.0.0) (2025-01-29)
 
 
