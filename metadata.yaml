@@ -75,6 +75,22 @@ spec:
         description: The list of permissions on spanner instance
         varType: list(string)
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
+              version: ">= 4.4"
+            spec:
+              outputExpr: "[\"account_details.email=>=>roles/spanner.databaseAdmin\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+              version: ">= 0.14"
+            spec:
+              outputExpr: "[\"service_account_id.email=>=>roles/spanner.databaseAdmin\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-vm//modules/instance_template
+              version: ">= 13.2.0"
+            spec:
+              outputExpr: "[\"service_account_info.email=>=>roles/spanner.databaseAdmin\"]"
       - name: instance_labels
         description: A set of key/value label pairs to assign to the spanner instance
         varType: map(string)
