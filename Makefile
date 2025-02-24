@@ -41,7 +41,7 @@ docker_test_prepare:
 		-e TF_VAR_billing_account \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
-		/usr/local/bin/execute_with_credentials.sh prepare_environment
+		/bin/bash -c 'git config --global --add safe.directory /workspace/test/setup/.terraform/modules/project && /usr/local/bin/execute_with_credentials.sh prepare_environment'
 
 # Clean up test environment within the docker container
 .PHONY: docker_test_cleanup

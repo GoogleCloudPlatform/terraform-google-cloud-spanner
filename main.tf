@@ -53,25 +53,28 @@ resource "google_spanner_instance" "instance_num_node" {
   num_nodes    = var.instance_size.num_nodes
   labels       = var.instance_labels
 
-  autoscaling_config {
-    autoscaling_limits {
-      min_processing_units = var.min_processing_units
-      max_processing_units = var.max_processing_units
-      min_nodes            = var.min_nodes
-      max_nodes            = var.max_nodes
-    }
-    autoscaling_targets {
-      high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
-      storage_utilization_percent           = var.storage_utilization_percent
-    }
-    asymmetric_autoscaling_options {
-      replica_selection {
-        location = var.replica_location
+  dynamic "autoscaling_config" {
+    for_each = var.enable_autoscaling ? [1] : []
+    content {
+      autoscaling_limits {
+        min_processing_units = var.min_processing_units
+        max_processing_units = var.max_processing_units
+        min_nodes            = var.min_nodes
+        max_nodes            = var.max_nodes
       }
-      overrides {
-        autoscaling_limits {
-          min_nodes = var.override_min_nodes
-          max_nodes = var.override_max_nodes
+      autoscaling_targets {
+        high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
+        storage_utilization_percent           = var.storage_utilization_percent
+      }
+      asymmetric_autoscaling_options {
+        replica_selection {
+          location = var.replica_location
+        }
+        overrides {
+          autoscaling_limits {
+            min_nodes = var.override_min_nodes
+            max_nodes = var.override_max_nodes
+          }
         }
       }
     }

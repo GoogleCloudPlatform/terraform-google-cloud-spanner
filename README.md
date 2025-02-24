@@ -59,6 +59,7 @@ Functional examples are included in the
 | database\_config | The list of databases with their configuration to be created | <pre>map(object({<br>    version_retention_period = string<br>    ddl                      = list(string)<br>    kms_key_name             = optional(string)<br>    deletion_protection      = bool<br>    database_iam             = list(string)<br>    enable_backup            = optional(bool)<br>    backup_retention         = optional(number)<br>    create_db                = optional(bool)<br>  }))</pre> | <pre>{<br>  "db1": {<br>    "backup_retention": 86400,<br>    "create_db": true,<br>    "database_iam": [],<br>    "ddl": [],<br>    "deletion_protection": false,<br>    "enable_backup": true,<br>    "version_retention_period": "3d"<br>  }<br>}</pre> | no |
 | default\_backup\_schedule\_type | Default backup schedule type for new databases. | `string` | `"NONE"` | no |
 | edition | The edition of the Spanner instance. | `string` | `"STANDARD"` | no |
+| enable\_autoscaling | Enable autoscaling for the Spanner Instance | `bool` | `false` | no |
 | force\_destroy | Whether to force destroy the instance and its backups. | `bool` | `false` | no |
 | high\_priority\_cpu\_utilization\_percent | Target high priority CPU utilization percentage for autoscaling. | `number` | `60` | no |
 | instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | n/a | yes |

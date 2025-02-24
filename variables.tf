@@ -58,6 +58,12 @@ variable "create_instance" {
   default     = true
 }
 
+variable "enable_autoscaling" {
+  description = "Enable autoscaling for the Spanner Instance"
+  type        = bool
+  default     = false
+}
+
 variable "instance_iam" {
   description = "The list of permissions on spanner instance"
   type        = list(string)
