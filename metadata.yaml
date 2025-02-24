@@ -109,13 +109,14 @@ spec:
               deletion_protection      = bool
               database_iam             = list(string)
               enable_backup            = optional(bool)
-              backup_retention         = optional(number)
+              backup_retention         = optional(string)
               create_db                = optional(bool)
             }))
         defaultValue:
           db1:
-            backup_retention: 86400
+            backup_retention: 86400s
             create_db: true
+            cron_spec_text: 0 2 * * *
             database_iam: []
             ddl: []
             deletion_protection: false
@@ -184,10 +185,40 @@ spec:
     outputs:
       - name: spanner_db_details
         description: Spanner Databases information map
+        type:
+          - object
+          - db1:
+              - object
+              - database_dialect: string
+                ddl:
+                  - list
+                  - string
+                deletion_protection: bool
+                enable_drop_protection: bool
+                encryption_config:
+                  - list
+                  - - object
+                    - kms_key_name: string
+                      kms_key_names:
+                        - list
+                        - string
+                id: string
+                instance: string
+                name: string
+                project: string
+                state: string
+                timeouts:
+                  - object
+                  - create: string
+                    delete: string
+                    update: string
+                version_retention_period: string
       - name: spanner_instance_id
         description: Spanner Instance ID
+        type: string
       - name: spanner_schedule_backup_id
         description: Spanner Backup Workflow ID
+        type: string
   requirements:
     roles:
       - level: Project

@@ -91,7 +91,7 @@ variable "database_config" {
     deletion_protection      = bool
     database_iam             = list(string)
     enable_backup            = optional(bool)
-    backup_retention         = optional(number)
+    backup_retention         = optional(string)
     create_db                = optional(bool)
   }))
   default = {
@@ -101,8 +101,9 @@ variable "database_config" {
       deletion_protection      = false
       database_iam             = []
       enable_backup            = true
-      backup_retention         = 86400
+      backup_retention         = "86400s"
       create_db                = true
+      cron_spec_text           = "0 2 * * *"
     }
   }
 }
