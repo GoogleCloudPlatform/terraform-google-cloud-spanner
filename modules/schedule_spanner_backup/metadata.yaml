@@ -48,23 +48,23 @@ spec:
       - name: instance_name
         description: The name of the Spanner instance
         varType: string
-        required: true
+        defaultValue: spanner-instance
       - name: database_name
         description: The name of the Spanner database
         varType: string
-        required: true
+        defaultValue: db1
       - name: backup_schedule_name
         description: The name of the backup schedule
         varType: string
-        required: true
+        defaultValue: backup-schedule
       - name: cron_spec_text
         description: The CRON spec text
         varType: string
-        required: true
+        defaultValue: 0 2 * * *
       - name: retention_duration
         description: The duration for which the backup should be retained.
         varType: string
-        defaultValue: 604800s
+        defaultValue: 86400s
       - name: use_full_backup_spec
         description: Whether to use full backup specification.
         varType: bool
@@ -76,6 +76,7 @@ spec:
     outputs:
       - name: spanner_schedule_backup_id
         description: Spanner Schedule Backup ID
+        type: string
   requirements:
     roles:
       - level: Project
