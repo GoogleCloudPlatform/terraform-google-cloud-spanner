@@ -46,19 +46,17 @@ spec:
       - name: project_id
         description: The project ID to deploy to
         varType: string
-        required: true
       - name: instance_name
         description: A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length.
         varType: string
-        defaultValue: regional-europe-west1
+        defaultValue: spanner-instance
       - name: instance_display_name
         description: The descriptive name for this instance as it appears in UIs.
         varType: string
-        defaultValue: regional-europe-west1
+        defaultValue: spanner-instance
       - name: instance_config
         description: The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance.
         varType: string
-        required: true
       - name: instance_size
         description: The sizing configuration of Spanner Instance based on num of nodes OR instance processing units.
         varType: |-

@@ -28,12 +28,12 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| backup\_schedule\_name | The name of the backup schedule | `string` | n/a | yes |
-| cron\_spec\_text | The CRON spec text | `string` | n/a | yes |
-| database\_name | The name of the Spanner database | `string` | n/a | yes |
-| instance\_name | The name of the Spanner instance | `string` | n/a | yes |
+| backup\_schedule\_name | The name of the backup schedule | `string` | `"backup-schedule"` | no |
+| cron\_spec\_text | The CRON spec text | `string` | `"0 2 * * *"` | no |
+| database\_name | The name of the Spanner database | `string` | `"db1"` | no |
+| instance\_name | The name of the Spanner instance | `string` | `"spanner-instance"` | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
-| retention\_duration | The duration for which the backup should be retained. | `string` | `"604800s"` | no |
+| retention\_duration | The duration for which the backup should be retained. | `string` | `"86400s"` | no |
 | use\_full\_backup\_spec | Whether to use full backup specification. | `bool` | `true` | no |
 | use\_incremental\_backup\_spec | Whether to use incremental backup specification. | `bool` | `false` | no |
 

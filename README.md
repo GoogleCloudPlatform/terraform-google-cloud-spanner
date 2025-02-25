@@ -62,11 +62,11 @@ Functional examples are included in the
 | enable\_autoscaling | Enable autoscaling for the Spanner Instance | `bool` | `false` | no |
 | force\_destroy | Whether to force destroy the instance and its backups. | `bool` | `false` | no |
 | high\_priority\_cpu\_utilization\_percent | Target high priority CPU utilization percentage for autoscaling. | `number` | `60` | no |
-| instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | n/a | yes |
-| instance\_display\_name | The descriptive name for this instance as it appears in UIs. | `string` | `"regional-europe-west1"` | no |
+| instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | `null` | no |
+| instance\_display\_name | The descriptive name for this instance as it appears in UIs. | `string` | `"spanner-instance"` | no |
 | instance\_iam | The list of permissions on spanner instance | `list(string)` | `[]` | no |
 | instance\_labels | A set of key/value label pairs to assign to the spanner instance | `map(string)` | `{}` | no |
-| instance\_name | A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length. | `string` | `"regional-europe-west1"` | no |
+| instance\_name | A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length. | `string` | `"spanner-instance"` | no |
 | instance\_size | The sizing configuration of Spanner Instance based on num of nodes OR instance processing units. | <pre>object({<br>    num_nodes        = optional(number)<br>    processing_units = optional(number)<br>  })</pre> | n/a | yes |
 | max\_nodes | Maximum number of nodes for autoscaling. | `number` | `3` | no |
 | max\_processing\_units | Maximum number of processing units for autoscaling. | `number` | `3000` | no |
@@ -74,7 +74,7 @@ Functional examples are included in the
 | min\_processing\_units | Minimum number of processing units for autoscaling. | `number` | `1000` | no |
 | override\_max\_nodes | Maximum number of nodes for specific replica overrides. | `number` | `3` | no |
 | override\_min\_nodes | Minimum number of nodes for specific replica overrides. | `number` | `1` | no |
-| project\_id | The project ID to deploy to | `string` | n/a | yes |
+| project\_id | The project ID to deploy to | `string` | `null` | no |
 | replica\_location | Location of the replica for asymmetric autoscaling. | `string` | `"us-central1"` | no |
 | storage\_utilization\_percent | Target storage utilization percentage for autoscaling. | `number` | `70` | no |
 | use\_full\_backup\_spec | Whether to use full backup specification. | `bool` | `true` | no |
