@@ -36,7 +36,7 @@ module "cloud_spanner" {
       ]
       deletion_protection = false
       database_iam        = []
-      enable_backup       = false
+      enable_backup       = true
       backup_retention    = 86400
       create_db           = true
     }
