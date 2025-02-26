@@ -113,8 +113,8 @@ resource "google_spanner_instance_iam_member" "instance" {
     )
   )
   project = var.project_id
-  role = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 1) : "roles/spanner.databaseAdmin"
-  member = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 0) : each.key
+  role    = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 1) : "roles/spanner.databaseAdmin"
+  member  = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 0) : each.key
 }
 
 resource "google_spanner_database" "database" {
