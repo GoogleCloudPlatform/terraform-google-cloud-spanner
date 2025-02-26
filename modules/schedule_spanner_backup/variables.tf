@@ -22,13 +22,11 @@ variable "project_id" {
 variable "instance_name" {
   description = "The name of the Spanner instance"
   type        = string
-  default     = "spanner-instance"
 }
 
 variable "database_name" {
   description = "The name of the Spanner database"
   type        = string
-  default     = "db1"
 }
 
 variable "backup_schedule_name" {

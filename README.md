@@ -56,17 +56,17 @@ Functional examples are included in the
 |------|-------------|------|---------|:--------:|
 | create\_instance | Switch to use create OR use existing Spanner Instance | `bool` | `true` | no |
 | cron\_spec\_text | The cron expression for the backup schedule. | `string` | `"0 2 * * *"` | no |
-| database\_config | The list of databases with their configuration to be created | <pre>map(object({<br>    version_retention_period = string<br>    ddl                      = list(string)<br>    kms_key_name             = optional(string)<br>    deletion_protection      = bool<br>    database_iam             = list(string)<br>    enable_backup            = optional(bool)<br>    backup_retention         = optional(string)<br>    create_db                = optional(bool)<br>  }))</pre> | <pre>{<br>  "db1": {<br>    "backup_retention": "86400s",<br>    "create_db": true,<br>    "cron_spec_text": "0 2 * * *",<br>    "database_iam": [],<br>    "ddl": [],<br>    "deletion_protection": false,<br>    "enable_backup": true,<br>    "version_retention_period": "3d"<br>  }<br>}</pre> | no |
+| database\_config | The list of databases with their configuration to be created | <pre>map(object({<br>    version_retention_period = string<br>    ddl                      = list(string)<br>    kms_key_name             = optional(string)<br>    deletion_protection      = bool<br>    database_iam             = list(string)<br>    enable_backup            = optional(bool)<br>    backup_retention         = optional(string)<br>    create_db                = optional(bool)<br>  }))</pre> | <pre>{<br>  "db1": {<br>    "backup_retention": "86400s",<br>    "create_db": true,<br>    "database_iam": [],<br>    "ddl": [],<br>    "deletion_protection": false,<br>    "enable_backup": true,<br>    "version_retention_period": "3d"<br>  }<br>}</pre> | no |
 | default\_backup\_schedule\_type | Default backup schedule type for new databases. | `string` | `"NONE"` | no |
 | edition | The edition of the Spanner instance. | `string` | `"STANDARD"` | no |
-| enable\_autoscaling | Enable autoscaling for the Spanner Instance | `bool` | `false` | no |
+| enable\_autoscaling | Enable autoscaling for the Spanner Instance | `bool` | `null` | no |
 | force\_destroy | Whether to force destroy the instance and its backups. | `bool` | `false` | no |
 | high\_priority\_cpu\_utilization\_percent | Target high priority CPU utilization percentage for autoscaling. | `number` | `60` | no |
-| instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | `null` | no |
+| instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | n/a | yes |
 | instance\_display\_name | The descriptive name for this instance as it appears in UIs. | `string` | `"spanner-instance"` | no |
 | instance\_iam | The list of permissions on spanner instance | `list(string)` | `[]` | no |
 | instance\_labels | A set of key/value label pairs to assign to the spanner instance | `map(string)` | `{}` | no |
-| instance\_name | A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length. | `string` | `"spanner-instance"` | no |
+| instance\_name | A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length. | `string` | n/a | yes |
 | instance\_size | The sizing configuration of Spanner Instance based on num of nodes OR instance processing units. | <pre>object({<br>    num_nodes        = optional(number)<br>    processing_units = optional(number)<br>  })</pre> | n/a | yes |
 | max\_nodes | Maximum number of nodes for autoscaling. | `number` | `3` | no |
 | max\_processing\_units | Maximum number of processing units for autoscaling. | `number` | `3000` | no |
@@ -74,7 +74,7 @@ Functional examples are included in the
 | min\_processing\_units | Minimum number of processing units for autoscaling. | `number` | `1000` | no |
 | override\_max\_nodes | Maximum number of nodes for specific replica overrides. | `number` | `3` | no |
 | override\_min\_nodes | Minimum number of nodes for specific replica overrides. | `number` | `1` | no |
-| project\_id | The project ID to deploy to | `string` | `null` | no |
+| project\_id | The project ID to deploy to | `string` | n/a | yes |
 | replica\_location | Location of the replica for asymmetric autoscaling. | `string` | `"us-central1"` | no |
 | storage\_utilization\_percent | Target storage utilization percentage for autoscaling. | `number` | `70` | no |
 | use\_full\_backup\_spec | Whether to use full backup specification. | `bool` | `true` | no |

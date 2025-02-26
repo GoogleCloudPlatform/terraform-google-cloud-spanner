@@ -17,13 +17,11 @@
 variable "project_id" {
   description = "The project ID to deploy to"
   type        = string
-  default     = null
 }
 
 variable "instance_name" {
   description = "A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length."
   type        = string
-  default     = "spanner-instance"
 }
 
 variable "instance_display_name" {
@@ -35,7 +33,6 @@ variable "instance_display_name" {
 variable "instance_config" {
   description = "The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance."
   type        = string
-  default     = null
 }
 
 variable "instance_size" {
@@ -63,7 +60,7 @@ variable "create_instance" {
 variable "enable_autoscaling" {
   description = "Enable autoscaling for the Spanner Instance"
   type        = bool
-  default     = false
+  default     = null
 }
 
 variable "instance_iam" {
@@ -99,7 +96,6 @@ variable "database_config" {
       enable_backup            = true
       backup_retention         = "86400s"
       create_db                = true
-      cron_spec_text           = "0 2 * * *"
     }
   }
 }

@@ -48,11 +48,11 @@ spec:
       - name: instance_name
         description: The name of the Spanner instance
         varType: string
-        defaultValue: spanner-instance
+        required: true
       - name: database_name
         description: The name of the Spanner database
         varType: string
-        defaultValue: db1
+        required: true
       - name: backup_schedule_name
         description: The name of the backup schedule
         varType: string
