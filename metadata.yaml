@@ -181,6 +181,10 @@ spec:
         varType: bool
         defaultValue: false
     outputs:
+      - name: env_vars
+        description: Map of environment variables for Spanner databases with keys as project_id:instance_name:database_name and values as fully qualified database paths
+        type:
+          - map
       - name: spanner_db_details
         description: Spanner Databases information map
         type:
