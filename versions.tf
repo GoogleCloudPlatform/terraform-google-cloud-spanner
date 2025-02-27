@@ -36,9 +36,9 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-spanner/v1.0.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-spanner/v1.1.0"
   }
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-spanner/v1.0.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-spanner/v1.1.0"
   }
 }
