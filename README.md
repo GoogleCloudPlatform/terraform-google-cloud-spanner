@@ -84,6 +84,7 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
+| env\_var | Map of environment variables for Spanner databases with keys as project\_id:instance\_name:database\_name and values as fully qualified database paths |
 | spanner\_db\_details | Spanner Databases information map |
 | spanner\_instance\_id | Spanner Instance ID |
 | spanner\_schedule\_backup\_id | Spanner Backup Workflow ID |

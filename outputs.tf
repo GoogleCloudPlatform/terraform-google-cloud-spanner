@@ -35,6 +35,14 @@ output "spanner_db_details" {
   }
 }
 
+output "env_var" {
+  description = "Map of environment variables for Spanner databases with keys as project_id:instance_name:database_name and values as fully qualified database paths"
+  value = {
+    for k, v in local.database_creation_list :
+    "${var.project_id}:${var.instance_name}:${k}" => "projects/${var.project_id}/instances/${var.instance_name}/databases/${k}"
+  }
+}
+
 output "spanner_schedule_backup_id" {
   description = "Spanner Backup Workflow ID"
   value       = length(local.backup_args) > 0 ? module.schedule_spanner_backup[0].spanner_schedule_backup_id : null
