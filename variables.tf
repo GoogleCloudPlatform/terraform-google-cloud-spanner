@@ -22,13 +22,12 @@ variable "project_id" {
 variable "instance_name" {
   description = "A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length."
   type        = string
-  default     = "regional-europe-west1"
 }
 
 variable "instance_display_name" {
   description = "The descriptive name for this instance as it appears in UIs."
   type        = string
-  default     = "regional-europe-west1"
+  default     = "spanner-instance"
 }
 
 variable "instance_config" {
@@ -58,6 +57,12 @@ variable "create_instance" {
   default     = true
 }
 
+variable "enable_autoscaling" {
+  description = "Enable autoscaling for the Spanner Instance"
+  type        = bool
+  default     = null
+}
+
 variable "instance_iam" {
   description = "The list of permissions on spanner instance"
   type        = list(string)
@@ -70,12 +75,6 @@ variable "instance_labels" {
   default     = {}
 }
 
-# variable "enable_default_db" {
-#   description = "Enable creation of default DB"
-#   type        = bool
-#   default     = false
-# }
-
 variable "database_config" {
   description = "The list of databases with their configuration to be created "
   type = map(object({
@@ -85,7 +84,7 @@ variable "database_config" {
     deletion_protection      = bool
     database_iam             = list(string)
     enable_backup            = optional(bool)
-    backup_retention         = optional(number)
+    backup_retention         = optional(string)
     create_db                = optional(bool)
   }))
   default = {
@@ -95,7 +94,7 @@ variable "database_config" {
       deletion_protection      = false
       database_iam             = []
       enable_backup            = true
-      backup_retention         = 86400
+      backup_retention         = "86400s"
       create_db                = true
     }
   }

@@ -37,9 +37,9 @@ locals {
     for k, v in var.database_config :
     {
       "backupId" : k,
-      "database" : "projects/${var.project_id}/instances/${var.instance_name}/databases/${k}",
+      "database" : k,
       "expireTime" : v.backup_retention,
-      "parent" : "projects/${var.project_id}/instances/${var.instance_name}"
+      "parent" : var.instance_name
     } if try(v.enable_backup, false)
   ]
 }
@@ -53,25 +53,28 @@ resource "google_spanner_instance" "instance_num_node" {
   num_nodes    = var.instance_size.num_nodes
   labels       = var.instance_labels
 
-  autoscaling_config {
-    autoscaling_limits {
-      min_processing_units = var.min_processing_units
-      max_processing_units = var.max_processing_units
-      min_nodes            = var.min_nodes
-      max_nodes            = var.max_nodes
-    }
-    autoscaling_targets {
-      high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
-      storage_utilization_percent           = var.storage_utilization_percent
-    }
-    asymmetric_autoscaling_options {
-      replica_selection {
-        location = var.replica_location
+  dynamic "autoscaling_config" {
+    for_each = var.enable_autoscaling ? [1] : []
+    content {
+      autoscaling_limits {
+        min_processing_units = var.min_processing_units
+        max_processing_units = var.max_processing_units
+        min_nodes            = var.min_nodes
+        max_nodes            = var.max_nodes
       }
-      overrides {
-        autoscaling_limits {
-          min_nodes = var.override_min_nodes
-          max_nodes = var.override_max_nodes
+      autoscaling_targets {
+        high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
+        storage_utilization_percent           = var.storage_utilization_percent
+      }
+      asymmetric_autoscaling_options {
+        replica_selection {
+          location = var.replica_location
+        }
+        overrides {
+          autoscaling_limits {
+            min_nodes = var.override_min_nodes
+            max_nodes = var.override_max_nodes
+          }
         }
       }
     }
@@ -110,8 +113,8 @@ resource "google_spanner_instance_iam_member" "instance" {
     )
   )
   project = var.project_id
-  role    = element(split("=>", each.key), 1)
-  member  = element(split("=>", each.key), 0)
+  role    = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 1) : "roles/spanner.databaseAdmin"
+  member  = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 0) : each.key
 }
 
 resource "google_spanner_database" "database" {
@@ -175,11 +178,16 @@ module "schedule_spanner_backup" {
 
   source                      = "./modules/schedule_spanner_backup"
   project_id                  = var.project_id
-  instance_name               = var.instance_name
+  instance_name               = each.value.parent
   database_name               = each.value.database
   retention_duration          = each.value.expireTime
   cron_spec_text              = var.cron_spec_text
   backup_schedule_name        = "backup-schedule-${each.key}"
   use_full_backup_spec        = var.use_full_backup_spec
   use_incremental_backup_spec = var.use_incremental_backup_spec
+  depends_on = [
+    google_spanner_instance.instance_num_node,
+    google_spanner_instance.instance_processing_units,
+    google_spanner_database.database
+  ]
 }

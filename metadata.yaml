@@ -50,11 +50,11 @@ spec:
       - name: instance_name
         description: A unique identifier for the instance, which cannot be changed after the instance is created. The name must be between 6 and 30 characters in length.
         varType: string
-        defaultValue: regional-europe-west1
+        required: true
       - name: instance_display_name
         description: The descriptive name for this instance as it appears in UIs.
         varType: string
-        defaultValue: regional-europe-west1
+        defaultValue: spanner-instance
       - name: instance_config
         description: The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance.
         varType: string
@@ -71,6 +71,9 @@ spec:
         description: "Switch to use create OR use existing Spanner Instance "
         varType: bool
         defaultValue: true
+      - name: enable_autoscaling
+        description: Enable autoscaling for the Spanner Instance
+        varType: bool
       - name: instance_iam
         description: The list of permissions on spanner instance
         varType: list(string)
@@ -80,17 +83,17 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
               version: ">= 4.4"
             spec:
-              outputExpr: "[\"account_details.email=>=>roles/spanner.databaseAdmin\"]"
+              outputExpr: iam_email
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
               version: ">= 0.14"
             spec:
-              outputExpr: "[\"service_account_id.email=>=>roles/spanner.databaseAdmin\"]"
+              outputExpr: service_account_id.member
           - source:
               source: github.com/terraform-google-modules/terraform-google-vm//modules/instance_template
               version: ">= 13.2.0"
             spec:
-              outputExpr: "[\"service_account_info.email=>=>roles/spanner.databaseAdmin\"]"
+              outputExpr: service_account_info.member
       - name: instance_labels
         description: A set of key/value label pairs to assign to the spanner instance
         varType: map(string)
@@ -105,12 +108,12 @@ spec:
               deletion_protection      = bool
               database_iam             = list(string)
               enable_backup            = optional(bool)
-              backup_retention         = optional(number)
+              backup_retention         = optional(string)
               create_db                = optional(bool)
             }))
         defaultValue:
           db1:
-            backup_retention: 86400
+            backup_retention: 86400s
             create_db: true
             database_iam: []
             ddl: []
@@ -180,10 +183,40 @@ spec:
     outputs:
       - name: spanner_db_details
         description: Spanner Databases information map
+        type:
+          - object
+          - db1:
+              - object
+              - database_dialect: string
+                ddl:
+                  - list
+                  - string
+                deletion_protection: bool
+                enable_drop_protection: bool
+                encryption_config:
+                  - list
+                  - - object
+                    - kms_key_name: string
+                      kms_key_names:
+                        - list
+                        - string
+                id: string
+                instance: string
+                name: string
+                project: string
+                state: string
+                timeouts:
+                  - object
+                  - create: string
+                    delete: string
+                    update: string
+                version_retention_period: string
       - name: spanner_instance_id
         description: Spanner Instance ID
+        type: string
       - name: spanner_schedule_backup_id
         description: Spanner Backup Workflow ID
+        type: string
   requirements:
     roles:
       - level: Project

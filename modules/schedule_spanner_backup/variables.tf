@@ -32,17 +32,19 @@ variable "database_name" {
 variable "backup_schedule_name" {
   description = "The name of the backup schedule"
   type        = string
+  default     = "backup-schedule"
 }
 
 variable "cron_spec_text" {
   description = "The CRON spec text"
   type        = string
+  default     = "0 2 * * *"
 }
 
 variable "retention_duration" {
   description = "The duration for which the backup should be retained."
   type        = string
-  default     = "604800s" // Example: 7 days
+  default     = "86400s" // Example: 1 day
 }
 
 variable "use_full_backup_spec" {
