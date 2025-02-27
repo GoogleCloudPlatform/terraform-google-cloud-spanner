@@ -88,12 +88,12 @@ spec:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
               version: ">= 0.14"
             spec:
-              outputExpr: service_account_id.email
+              outputExpr: service_account_id.member
           - source:
               source: github.com/terraform-google-modules/terraform-google-vm//modules/instance_template
               version: ">= 13.2.0"
             spec:
-              outputExpr: service_account_info.email
+              outputExpr: service_account_info.member
       - name: instance_labels
         description: A set of key/value label pairs to assign to the spanner instance
         varType: map(string)
