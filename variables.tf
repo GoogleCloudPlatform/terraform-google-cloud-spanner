@@ -79,10 +79,10 @@ variable "database_config" {
   description = "The list of databases with their configuration to be created "
   type = map(object({
     version_retention_period = string
-    ddl                      = optional(list(string),[])
+    ddl                      = optional(list(string), [])
     kms_key_name             = optional(string)
     deletion_protection      = bool
-    database_iam             = optional(list(string),[])
+    database_iam             = optional(list(string), [])
     enable_backup            = optional(bool)
     backup_retention         = optional(string)
     create_db                = optional(bool)
