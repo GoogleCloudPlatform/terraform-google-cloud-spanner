@@ -60,7 +60,7 @@ variable "create_instance" {
 variable "enable_autoscaling" {
   description = "Enable autoscaling for the Spanner Instance"
   type        = bool
-  default     = null
+  default     = false
 }
 
 variable "instance_iam" {
