@@ -8,6 +8,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [1.1.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v1.1.1...v1.1.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* Changing type for ddl and database_iam in database_config ([#71](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/71)) ([51cb379](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/51cb3798ce89d662bcd3a1697374f4b4d09c38bb))
+
 ## [1.1.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v1.1.0...v1.1.1) (2025-02-28)
 
 
