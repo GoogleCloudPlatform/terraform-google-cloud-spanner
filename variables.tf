@@ -31,7 +31,7 @@ variable "instance_display_name" {
 }
 
 variable "instance_config" {
-  description = "The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance."
+  description = "The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance, example: `us-central1`, `us-east1` (https://cloud.google.com/spanner/docs/instance-configurations#available-configurations-regional)."
   type        = string
 }
 
