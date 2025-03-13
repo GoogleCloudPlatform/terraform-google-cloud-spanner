@@ -62,7 +62,7 @@ Functional examples are included in the
 | enable\_autoscaling | Enable autoscaling for the Spanner Instance | `bool` | `false` | no |
 | force\_destroy | Whether to force destroy the instance and its backups. | `bool` | `false` | no |
 | high\_priority\_cpu\_utilization\_percent | Target high priority CPU utilization percentage for autoscaling. | `number` | `60` | no |
-| instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. | `string` | n/a | yes |
+| instance\_config | The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. It determines where your data is stored. Values are typically of the form regional-europe-west1, us-central etc. In order to obtain a valid list please consult the https://cloud.google.com/spanner/docs/instance-configurations | `string` | n/a | yes |
 | instance\_display\_name | The descriptive name for this instance as it appears in UIs. | `string` | `"spanner-instance"` | no |
 | instance\_iam | The list of permissions on spanner instance | `list(string)` | `[]` | no |
 | instance\_labels | A set of key/value label pairs to assign to the spanner instance | `map(string)` | `{}` | no |
