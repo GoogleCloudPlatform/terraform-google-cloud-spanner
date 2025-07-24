@@ -18,16 +18,7 @@ locals {
     root = [
       "iam.googleapis.com",
       "cloudresourcemanager.googleapis.com",
-      "storage-api.googleapis.com",
-      "serviceusage.googleapis.com",
-      "workflows.googleapis.com",
-      "cloudscheduler.googleapis.com",
       "spanner.googleapis.com",
-      "pubsub.googleapis.com",
-      "logging.googleapis.com",
-      "storage.googleapis.com",
-      "appengine.googleapis.com",
-      "cloudkms.googleapis.com",
     ]
     schedule_spanner_backup = [
       "iam.googleapis.com",

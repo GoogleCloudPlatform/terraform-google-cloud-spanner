@@ -227,20 +227,12 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/owner
+          - roles/spanner.admin
+          - roles/resourcemanager.projectIamAdmin
     services:
-      - appengine.googleapis.com
-      - cloudkms.googleapis.com
       - cloudresourcemanager.googleapis.com
-      - cloudscheduler.googleapis.com
       - iam.googleapis.com
-      - logging.googleapis.com
-      - pubsub.googleapis.com
-      - serviceusage.googleapis.com
       - spanner.googleapis.com
-      - storage-api.googleapis.com
-      - storage.googleapis.com
-      - workflows.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6.1, < 7"

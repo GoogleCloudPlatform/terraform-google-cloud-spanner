@@ -81,7 +81,7 @@ docker_generate_docs:
 	 	-e ENABLE_BPMETADATA=1 \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
-		/bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_docs display --per-module-requirements'
+		/bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_docs --display --per-module-requirements'
 
 # Generate metadata
 .PHONY: docker_generate_metadata_w_display

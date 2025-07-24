@@ -17,7 +17,8 @@
 locals {
   per_module_roles = {
     root = [
-      "roles/owner"
+      "roles/spanner.admin",
+      "roles/resourcemanager.projectIamAdmin",
     ]
     schedule_spanner_backup = [
       "roles/owner"
