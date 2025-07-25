@@ -13,6 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+locals {
+  per_module_services = {
+    root = [
+      "iam.googleapis.com",
+      "cloudresourcemanager.googleapis.com",
+      "spanner.googleapis.com",
+    ]
+    schedule_spanner_backup = [
+      "iam.googleapis.com",
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "workflows.googleapis.com",
+      "cloudscheduler.googleapis.com",
+      "spanner.googleapis.com",
+      "pubsub.googleapis.com",
+      "logging.googleapis.com",
+      "storage.googleapis.com",
+      "appengine.googleapis.com",
+      "cloudkms.googleapis.com",
+    ]
+  }
+}
 
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
@@ -24,18 +47,5 @@ module "project" {
   folder_id         = var.folder_id
   billing_account   = var.billing_account
 
-  activate_apis = [
-    "iam.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "storage-api.googleapis.com",
-    "serviceusage.googleapis.com",
-    "workflows.googleapis.com",
-    "cloudscheduler.googleapis.com",
-    "spanner.googleapis.com",
-    "pubsub.googleapis.com",
-    "logging.googleapis.com",
-    "storage.googleapis.com",
-    "appengine.googleapis.com",
-    "cloudkms.googleapis.com",
-  ]
+  activate_apis = tolist(toset(flatten(values(local.per_module_services))))
 }

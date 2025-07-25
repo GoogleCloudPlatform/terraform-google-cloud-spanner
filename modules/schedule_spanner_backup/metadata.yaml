@@ -83,18 +83,18 @@ spec:
         roles:
           - roles/owner
     services:
-      - iam.googleapis.com
-      - cloudresourcemanager.googleapis.com
-      - storage-api.googleapis.com
-      - serviceusage.googleapis.com
-      - workflows.googleapis.com
-      - cloudscheduler.googleapis.com
-      - spanner.googleapis.com
-      - pubsub.googleapis.com
-      - logging.googleapis.com
-      - storage.googleapis.com
       - appengine.googleapis.com
       - cloudkms.googleapis.com
+      - cloudresourcemanager.googleapis.com
+      - cloudscheduler.googleapis.com
+      - iam.googleapis.com
+      - logging.googleapis.com
+      - pubsub.googleapis.com
+      - serviceusage.googleapis.com
+      - spanner.googleapis.com
+      - storage-api.googleapis.com
+      - storage.googleapis.com
+      - workflows.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6.1, < 7"
