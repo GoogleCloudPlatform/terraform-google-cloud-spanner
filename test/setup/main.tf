@@ -19,6 +19,7 @@ locals {
       "iam.googleapis.com",
       "cloudresourcemanager.googleapis.com",
       "spanner.googleapis.com",
+      "cloudkms.googleapis.com",
     ]
     schedule_spanner_backup = [
       "iam.googleapis.com",
