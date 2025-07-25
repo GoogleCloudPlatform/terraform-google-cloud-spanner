@@ -19,6 +19,7 @@ locals {
     root = [
       "roles/spanner.admin",
       "roles/resourcemanager.projectIamAdmin",
+      "roles/cloudkms.cryptoKeyEncrypterDecrypter",
     ]
     schedule_spanner_backup = [
       "roles/owner"
