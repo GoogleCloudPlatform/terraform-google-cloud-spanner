@@ -33,15 +33,47 @@ spec:
         cron_spec_text:
           name: cron_spec_text
           title: Cron Spec Text
+          regexValidation: ^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])(-([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]))?)(,(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])(-([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]))?))* (\*|([0-9]|1[0-9]|2[0-3])(-([0-9]|1[0-9]|2[0-3]))?)(,(\*|([0-9]|1[0-9]|2[0-3])(-([0-9]|1[0-9]|2[0-3]))?))* (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])(-([1-9]|1[0-9]|2[0-9]|3[0-1]))?)(,(\*|([1-9]|1[0-9]|2[0-9]|3[0-1])(-([1-9]|1[0-9]|2[0-9]|3[0-1]))?))* (\*|([1-9]|1[0-2])(-([1-9]|1[0-2]))?)(,(\*|([1-9]|1[0-2])(-([1-9]|1[0-2]))?))* (\*|([0-6])(-([0-6]))?)(,(\*|([0-6])(-([0-6]))?))*$
+          validation: Must be a valid cron expression.
         database_config:
           name: database_config
           title: Database Config
+          properties:
+            backup_retention:
+              name: backup_retention
+              title: Backup Retention
+              regexValidation: ^([0-9]+(s|m|h|d))+$
+              validation: Must be a valid duration string (e.g., '1d', '86400s').
+            kms_key_name:
+              name: kms_key_name
+              title: KMS Key Name
+              regexValidation: ^projects\/[a-z0-9\-]+\/locations\/[a-z0-9\-]+\/keyRings\/[a-z0-9\-]+\/cryptoKeys\/[a-z0-9\-]+$
+              validation: Must be a full KMS key resource name.
+            version_retention_period:
+              name: version_retention_period
+              title: Version Retention Period
+              regexValidation: ^([0-9]+(s|m|h|d))+$
+              validation: Must be a valid duration string (e.g., '7d', '168h').
         default_backup_schedule_type:
           name: default_backup_schedule_type
           title: Default Backup Schedule Type
+          enumValueLabels:
+            - label: NONE
+              value: NONE
+            - label: AUTOMATIC
+              value: AUTOMATIC
         edition:
           name: edition
           title: Edition
+          enumValueLabels:
+            - label: STANDARD
+              value: STANDARD
+            - label: ENTERPRISE
+              value: ENTERPRISE
+            - label: ENTERPRISE_PLUS
+              value: ENTERPRISE_PLUS
+            - label: EDITION_UNSPECIFIED
+              value: EDITION_UNSPECIFIED  
         enable_autoscaling:
           name: enable_autoscaling
           title: Enable Autoscaling
@@ -66,6 +98,8 @@ spec:
         instance_name:
           name: instance_name
           title: Instance Name
+          regexValidation: ^[a-z]([-a-z0-9]{4,28})[a-z0-9]$
+          validation: Must start with a lowercase letter and contain between 6 and 30 lowercase letters, numbers, or hyphens.
         instance_size:
           name: instance_size
           title: Instance Size
