@@ -73,7 +73,7 @@ spec:
             - label: ENTERPRISE_PLUS
               value: ENTERPRISE_PLUS
             - label: EDITION_UNSPECIFIED
-              value: EDITION_UNSPECIFIED  
+              value: EDITION_UNSPECIFIED
         enable_autoscaling:
           name: enable_autoscaling
           title: Enable Autoscaling
