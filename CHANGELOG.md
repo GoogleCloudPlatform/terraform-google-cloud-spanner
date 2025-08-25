@@ -8,6 +8,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [1.1.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v1.1.3...v1.1.4) (2025-08-22)
+
+
+### Bug Fixes
+
+* per module requirements configs for cloud-spanner ([#81](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/81)) ([951cfaa](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/951cfaaae8e7aed85f912feb1ccd90cbb0efd5e5))
+
 ## [1.1.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v1.1.2...v1.1.3) (2025-03-13)
 
 
