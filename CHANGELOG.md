@@ -8,6 +8,19 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [1.2.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v1.1.3...v1.2.0) (2025-09-17)
+
+
+### Features
+
+* **deps:** Update Terraform Google Provider to v7 (major) ([#85](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/85)) ([c1906f9](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/c1906f986802a940b1c639530606ac4bf01f48b4))
+
+
+### Bug Fixes
+
+* Add UI validation for spanner ([#84](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/84)) ([39d04b9](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/39d04b9c817ada3317ef290edafc4c4eb8a244d5))
+* per module requirements configs for cloud-spanner ([#81](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/issues/81)) ([951cfaa](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/commit/951cfaaae8e7aed85f912feb1ccd90cbb0efd5e5))
+
 ## [1.1.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner/compare/v1.1.2...v1.1.3) (2025-03-13)
 
 
