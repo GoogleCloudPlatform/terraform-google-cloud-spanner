@@ -81,6 +81,8 @@ spec:
         high_priority_cpu_utilization_percent:
           name: high_priority_cpu_utilization_percent
           title: High Priority Cpu Utilization Percent
+          min: 0
+          max: 100
         instance_config:
           name: instance_config
           title: Instance Config
@@ -128,6 +130,8 @@ spec:
         storage_utilization_percent:
           name: storage_utilization_percent
           title: Storage Utilization Percent
+          min: 0
+          max: 100
         use_full_backup_spec:
           name: use_full_backup_spec
           title: Use Full Backup Spec
