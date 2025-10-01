@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
       sourceType: git
-    version: 1.2.0
+    version: 1.2.1
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
