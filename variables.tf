@@ -35,19 +35,22 @@ variable "instance_config" {
   type        = string
 }
 
+
 variable "instance_size" {
   description = "The sizing configuration of Spanner Instance based on num of nodes OR instance processing units."
   type = object({
-    num_nodes        = optional(number)
-    processing_units = optional(number)
+    num_nodes          = optional(number)
+    processing_units   = optional(number)
+    enable_autoscaling = optional(bool, false)
   })
   validation {
     condition = !(
       try(var.instance_size.num_nodes, null) == null
       &&
       try(var.instance_size.processing_units, null) == null
+      && !try(var.instance_size.enable_autoscaling, false)
     )
-    error_message = "Either num_nodes OR processing_units information is supported."
+    error_message = "Either num_nodes OR processing_units OR autoscaling information is supported."
   }
 }
 
@@ -55,12 +58,6 @@ variable "create_instance" {
   description = "Switch to use create OR use existing Spanner Instance "
   type        = bool
   default     = true
-}
-
-variable "enable_autoscaling" {
-  description = "Enable autoscaling for the Spanner Instance"
-  type        = bool
-  default     = false
 }
 
 variable "instance_iam" {
@@ -82,7 +79,7 @@ variable "database_config" {
     ddl                      = optional(list(string), [])
     kms_key_name             = optional(string)
     deletion_protection      = bool
-    database_iam             = optional(list(string), [])
+    database_iam             = optional(map(list(string)), {})
     enable_backup            = optional(bool)
     backup_retention         = optional(string)
     create_db                = optional(bool)
@@ -92,7 +89,7 @@ variable "database_config" {
       version_retention_period = "3d"
       ddl                      = []
       deletion_protection      = false
-      database_iam             = []
+      database_iam             = {}
       enable_backup            = true
       backup_retention         = "86400s"
       create_db                = true
@@ -106,58 +103,49 @@ variable "cron_spec_text" {
   default     = "0 2 * * *" // Example: once a day at 2 AM UTC
 }
 
-variable "min_processing_units" {
-  description = "Minimum number of processing units for autoscaling."
-  type        = number
-  default     = 1000
+variable "autoscaling_limits" {
+  description = <<EOT
+  Minimum number of processing units for autoscaling.
+  Maximum number of processing units for autoscaling.
+  Minimum number of nodes for autoscaling.
+  Maximum number of nodes for autoscaling.
+  EOT
+  type = object({
+    min_processing_units = optional(number, 0)
+    max_processing_units = optional(number, 0)
+    min_nodes            = optional(number, 0)
+    max_nodes            = optional(number, 0)
+  })
+  nullable = true
 }
 
-variable "max_processing_units" {
-  description = "Maximum number of processing units for autoscaling."
-  type        = number
-  default     = 3000
+variable "autoscaling_targets" {
+  description = "Targets for autoscaling high priority CPU and storage utilization percentage for autoscaling."
+  type = object({
+    high_priority_cpu_utilization_percent = optional(number, 60)
+    storage_utilization_percent           = optional(number, 70)
+  })
+  nullable = true
 }
 
-variable "min_nodes" {
-  description = "Minimum number of nodes for autoscaling."
-  type        = number
-  default     = 1
-}
-
-variable "max_nodes" {
-  description = "Maximum number of nodes for autoscaling."
-  type        = number
-  default     = 3
-}
-
-variable "high_priority_cpu_utilization_percent" {
-  description = "Target high priority CPU utilization percentage for autoscaling."
-  type        = number
-  default     = 60
-}
-
-variable "storage_utilization_percent" {
-  description = "Target storage utilization percentage for autoscaling."
-  type        = number
-  default     = 70
-}
-
-variable "replica_location" {
-  description = "Location of the replica for asymmetric autoscaling."
-  type        = string
-  default     = "us-central1"
-}
-
-variable "override_min_nodes" {
-  description = "Minimum number of nodes for specific replica overrides."
-  type        = number
-  default     = 1
-}
-
-variable "override_max_nodes" {
-  description = "Maximum number of nodes for specific replica overrides."
-  type        = number
-  default     = 3
+variable "asymmetric_autoscaling_options" {
+  description = <<EOT
+    Location of the replica for asymmetric autoscaling.
+    Minimum number of nodes for specific replica overrides.
+    Maximum number of nodes for specific replica overrides.
+  EOT
+  type = object(
+    {
+      location = optional(string)
+      override_autoscaling_limits = optional(object(
+        {
+          min_nodes = optional(number)
+          max_nodes = optional(number)
+        }
+      ))
+    }
+  )
+  nullable = true
 }
 
 variable "edition" {
