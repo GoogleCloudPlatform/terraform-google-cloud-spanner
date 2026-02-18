@@ -58,21 +58,22 @@ resource "google_spanner_instance" "instance_processing_units" {
     for_each = var.enable_autoscaling ? [1] : []
     content {
       autoscaling_limits {
-        min_processing_units = var.min_processing_units
-        max_processing_units = var.max_processing_units
-        min_nodes            = var.min_nodes
-        max_nodes            = var.max_nodes
+        # IMPORTANT: Spanner API oneof: set EITHER nodes OR processing_units
+        min_processing_units = local.enable_instance_nn ? null : var.min_processing_units
+        max_processing_units = local.enable_instance_nn ? null : var.max_processing_units
+
+        min_nodes = local.enable_instance_nn ? var.min_nodes : null
+        max_nodes = local.enable_instance_nn ? var.max_nodes : null
       }
+
       autoscaling_targets {
         high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
         storage_utilization_percent           = var.storage_utilization_percent
       }
+
+      # Only include asymmetric autoscaling when configured (otherwise omit completely)
       dynamic "asymmetric_autoscaling_options" {
-        for_each = (
-          try(var.replica_location, null) != null ||
-          try(var.override_min_nodes, null) != null ||
-          try(var.override_max_nodes, null) != null
-        ) ? [1] : []
+        for_each = try(var.replica_location, null) != null ? [1] : []
         content {
           replica_selection {
             location = var.replica_location
