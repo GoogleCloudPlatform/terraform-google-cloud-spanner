@@ -73,7 +73,7 @@ resource "google_spanner_instance" "instance_processing_units" {
 
       # Only include asymmetric autoscaling when configured (otherwise omit completely)
       dynamic "asymmetric_autoscaling_options" {
-        for_each = try(var.replica_location, null) != null ? [1] : []
+        for_each = (local.enable_instance_nn && try(var.replica_location, null) != null) ? [1] : []
         content {
           replica_selection {
             location = var.replica_location

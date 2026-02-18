@@ -163,7 +163,7 @@ variable "override_max_nodes" {
 variable "edition" {
   description = "The edition of the Spanner instance."
   type        = string
-  default     = "STANDARD"
+  default     = "ENTERPRISE"
 }
 
 variable "default_backup_schedule_type" {
