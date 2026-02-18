@@ -139,7 +139,7 @@ variable "high_priority_cpu_utilization_percent" {
 variable "storage_utilization_percent" {
   description = "Target storage utilization percentage for autoscaling."
   type        = number
-  default     = 70
+  default     = 95
 }
 
 variable "replica_location" {
