@@ -51,7 +51,7 @@ resource "google_spanner_instance" "instance_processing_units" {
   display_name = var.instance_display_name
   name         = var.instance_name
 
-  processing_units = var.instance_size.processing_units
+  processing_units = var.enable_autoscaling ? null : var.instance_size.processing_units
   labels           = var.instance_labels
 
   dynamic "autoscaling_config" {
