@@ -67,14 +67,21 @@ resource "google_spanner_instance" "instance_processing_units" {
         high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
         storage_utilization_percent           = var.storage_utilization_percent
       }
-      asymmetric_autoscaling_options {
-        replica_selection {
-          location = var.replica_location
-        }
-        overrides {
-          autoscaling_limits {
-            min_nodes = var.override_min_nodes
-            max_nodes = var.override_max_nodes
+      dynamic "asymmetric_autoscaling_options" {
+        for_each = (
+          try(var.replica_location, null) != null ||
+          try(var.override_min_nodes, null) != null ||
+          try(var.override_max_nodes, null) != null
+        ) ? [1] : []
+        content {
+          replica_selection {
+            location = var.replica_location
+          }
+          overrides {
+            autoscaling_limits {
+              min_nodes = var.override_min_nodes
+              max_nodes = var.override_max_nodes
+            }
           }
         }
       }
@@ -86,15 +93,21 @@ resource "google_spanner_instance" "instance_processing_units" {
   force_destroy                = var.force_destroy
 }
 
-resource "google_spanner_instance" "instance_processing_units" {
-  count            = !local.enable_instance_nn && var.create_instance ? 1 : 0
-  project          = var.project_id
-  config           = var.instance_config
-  display_name     = var.instance_display_name
-  name             = var.instance_name
-  processing_units = var.instance_size.processing_units
-  labels           = var.instance_labels
+resource "google_spanner_instance" "instance_num_node" {
+  count        = (local.enable_instance_nn && var.create_instance) ? 1 : 0
+  project      = var.project_id
+  config       = var.instance_config
+  display_name = var.instance_display_name
+  name         = var.instance_name
+
+  num_nodes = var.instance_size.num_nodes
+  labels    = var.instance_labels
+
+  edition                      = var.edition
+  default_backup_schedule_type = var.default_backup_schedule_type
+  force_destroy                = var.force_destroy
 }
+
 
 data "google_spanner_instance" "instance" {
   count   = !var.create_instance ? 1 : 0
