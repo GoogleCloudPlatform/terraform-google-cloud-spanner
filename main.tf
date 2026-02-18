@@ -44,14 +44,15 @@ locals {
   ]
 }
 
-resource "google_spanner_instance" "instance_num_node" {
-  count        = local.enable_instance_nn && var.create_instance ? 1 : 0
+resource "google_spanner_instance" "instance_processing_units" {
+  count        = !local.enable_instance_nn && var.create_instance ? 1 : 0
   project      = var.project_id
   config       = var.instance_config
   display_name = var.instance_display_name
   name         = var.instance_name
-  num_nodes    = var.instance_size.num_nodes
-  labels       = var.instance_labels
+
+  processing_units = var.instance_size.processing_units
+  labels           = var.instance_labels
 
   dynamic "autoscaling_config" {
     for_each = var.enable_autoscaling ? [1] : []
