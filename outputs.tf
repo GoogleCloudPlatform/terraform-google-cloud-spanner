@@ -18,11 +18,11 @@ output "spanner_instance_id" {
   description = "Spanner Instance ID"
   value = (
     !var.create_instance ?
-    data.google_spanner_instance.instance[0].id :
+    data.google_spanner_instance.instance[0].name :
     (
       local.enable_instance_nn ?
-      google_spanner_instance.instance_num_node[0].id :
-      google_spanner_instance.instance_processing_units[0].id
+      google_spanner_instance.instance_num_node[0].name :
+      (try(var.instance_size.enable_autoscaling, false) ? google_spanner_instance.autoscaled[0].name : google_spanner_instance.instance_processing_units[0].name)
     )
   )
 }

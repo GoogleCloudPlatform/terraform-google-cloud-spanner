@@ -16,7 +16,7 @@
 
 locals {
   enable_instance_nn = (
-    try(var.instance_size.num_nodes, 0) != null ?
+    try(var.instance_size.num_nodes, 0) != null && !try(var.instance_size.enable_autoscaling, false) ?
     true : false
   )
 
@@ -26,10 +26,11 @@ locals {
   }
 
   database_iam = flatten([
-    for k, v in var.database_config :
+    for database, config in var.database_config :
     [
-      for x in v.database_iam :
-      "${k}|${element(split("=>", x), 0)}|${element(split("=>", x), 1)}"
+      for role, members in config.database_iam : [
+        for member in members : "${database}|${role}|${member}"
+      ]
     ]
   ])
 
@@ -42,42 +43,71 @@ locals {
       "parent" : var.instance_name
     } if try(v.enable_backup, false)
   ]
+
+  instance_iam_processed = {
+    for el in flatten([
+      for role, members in var.instance_iam : [
+        for member in members : { key = "${role}|${member}", member = member, role = role }
+      ]
+    ]) : lookup(el, "key", "abc") => el
+  }
 }
 
 resource "google_spanner_instance" "instance_num_node" {
-  count        = local.enable_instance_nn && var.create_instance ? 1 : 0
+  count                        = local.enable_instance_nn && var.create_instance ? 1 : 0
+  project                      = var.project_id
+  config                       = var.instance_config
+  display_name                 = var.instance_display_name
+  name                         = var.instance_name
+  num_nodes                    = var.instance_size.num_nodes
+  labels                       = var.instance_labels
+  edition                      = var.edition
+  default_backup_schedule_type = var.default_backup_schedule_type
+  force_destroy                = var.force_destroy
+}
+
+
+resource "google_spanner_instance" "autoscaled" {
+  count        = try(var.instance_size.enable_autoscaling, false) && var.create_instance ? 1 : 0
   project      = var.project_id
   config       = var.instance_config
   display_name = var.instance_display_name
   name         = var.instance_name
-  num_nodes    = var.instance_size.num_nodes
   labels       = var.instance_labels
 
-  dynamic "autoscaling_config" {
-    for_each = var.enable_autoscaling ? [1] : []
-    content {
-      autoscaling_limits {
-        min_processing_units = var.min_processing_units
-        max_processing_units = var.max_processing_units
-        min_nodes            = var.min_nodes
-        max_nodes            = var.max_nodes
+  autoscaling_config {
+    dynamic "autoscaling_limits" {
+      for_each = var.autoscaling_limits != null ? [1] : []
+      content {
+        min_processing_units = var.autoscaling_limits.min_processing_units
+        max_processing_units = var.autoscaling_limits.max_processing_units
+        min_nodes            = var.autoscaling_limits.min_nodes
+        max_nodes            = var.autoscaling_limits.max_nodes
       }
-      autoscaling_targets {
-        high_priority_cpu_utilization_percent = var.high_priority_cpu_utilization_percent
-        storage_utilization_percent           = var.storage_utilization_percent
+    }
+
+    dynamic "autoscaling_targets" {
+      for_each = var.autoscaling_targets != null ? [1] : []
+      content {
+        high_priority_cpu_utilization_percent = var.autoscaling_targets.high_priority_cpu_utilization_percent
+        storage_utilization_percent           = var.autoscaling_targets.storage_utilization_percent
       }
-      asymmetric_autoscaling_options {
+    }
+    dynamic "asymmetric_autoscaling_options" {
+      for_each = var.asymmetric_autoscaling_options != null ? [1] : []
+      content {
         replica_selection {
-          location = var.replica_location
+          location = try(var.asymmetric_autoscaling_options.location, null)
         }
         overrides {
           autoscaling_limits {
-            min_nodes = var.override_min_nodes
-            max_nodes = var.override_max_nodes
+            min_nodes = try(var.asymmetric_autoscaling_options.override_autoscaling_limits.min_nodes, null)
+            max_nodes = try(var.asymmetric_autoscaling_options.override_autoscaling_limits.max_nodes, null)
           }
         }
       }
     }
+
   }
 
   edition                      = var.edition
@@ -86,7 +116,7 @@ resource "google_spanner_instance" "instance_num_node" {
 }
 
 resource "google_spanner_instance" "instance_processing_units" {
-  count            = !local.enable_instance_nn && var.create_instance ? 1 : 0
+  count            = !local.enable_instance_nn && !try(var.instance_size.enable_autoscaling, false) && var.create_instance ? 1 : 0
   project          = var.project_id
   config           = var.instance_config
   display_name     = var.instance_display_name
@@ -102,19 +132,19 @@ data "google_spanner_instance" "instance" {
 }
 
 resource "google_spanner_instance_iam_member" "instance" {
-  for_each = toset(var.instance_iam)
+  for_each = local.instance_iam_processed
   instance = (
     !var.create_instance ?
     data.google_spanner_instance.instance[0].name :
     (
       local.enable_instance_nn ?
       google_spanner_instance.instance_num_node[0].name :
-      google_spanner_instance.instance_processing_units[0].name
+      (try(var.instance_size.enable_autoscaling, false) ? google_spanner_instance.autoscaled[0].name : google_spanner_instance.instance_processing_units[0].name)
     )
   )
   project = var.project_id
-  role    = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 1) : "roles/spanner.databaseAdmin"
-  member  = length(split("=>", each.key)) > 1 ? element(split("=>", each.key), 0) : each.key
+  role    = lookup(each.value, "role", "roles/spanner.databaseAdmin")
+  member  = lookup(each.value, "member", "random")
 }
 
 resource "google_spanner_database" "database" {
@@ -125,7 +155,7 @@ resource "google_spanner_database" "database" {
     (
       local.enable_instance_nn ?
       google_spanner_instance.instance_num_node[0].name :
-      google_spanner_instance.instance_processing_units[0].name
+      (try(var.instance_size.enable_autoscaling, false) ? google_spanner_instance.autoscaled[0].name : google_spanner_instance.instance_processing_units[0].name)
     )
   )
   project                  = var.project_id
@@ -160,13 +190,13 @@ resource "google_spanner_database_iam_member" "database" {
     (
       local.enable_instance_nn ?
       google_spanner_instance.instance_num_node[0].name :
-      google_spanner_instance.instance_processing_units[0].name
+      (try(var.instance_size.enable_autoscaling, false) ? google_spanner_instance.autoscaled[0].name : google_spanner_instance.instance_processing_units[0].name)
     )
   )
   project  = var.project_id
   database = element(split("|", each.key), 0)
-  role     = element(split("|", each.key), 2)
-  member   = element(split("|", each.key), 1)
+  role     = element(split("|", each.key), 1)
+  member   = element(split("|", each.key), 2)
 
   depends_on = [
     google_spanner_database.database
