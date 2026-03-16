@@ -48,4 +48,6 @@ module "project" {
   billing_account   = var.billing_account
 
   activate_apis = tolist(toset(flatten(values(local.per_module_services))))
+
+  deletion_policy   = "DELETE"
 }
