@@ -10,6 +10,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 ## Usage
 
+
 Basic usage of this module is as follows:
 
 ```hcl
